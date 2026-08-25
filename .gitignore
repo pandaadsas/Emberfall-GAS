@@ -1,0 +1,62 @@
+# --- Unreal Engine Generated ---
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# --- IDE / Editor ---
+.vscode/
+.vs/
+.idea/
+.ionide/
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# --- Generated Solution / Project Files ---
+*.sln
+*.slnx
+*.xcodeproj
+*.xcworkspace
+
+# --- Platform Specific ---
+*.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Logs & Crash Reports ---
+*.log
+CrashReportClient/
+Saved/Autosaves/
+Saved/Backup/
+Saved/Config/
+Saved/Crashes/
+Saved/Logs/
+Saved/StagedBuilds/
+Saved/ShaderDebugInfo/
+Saved/UnrealBuildTool/
+
+# --- Python / Scripting ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+PipInstall/
+
+# --- Windows specific ---
+*.manifest
+*.dll
+*.exp
+*.lib
+*.pdb
+
+# --- Project specific backup files ---
+*.bak
+*-backup-*
