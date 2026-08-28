@@ -71,7 +71,10 @@ void ADuraCharacter::HideMagicCircle_Implementation()
 
 void ADuraCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
 {
-    ADuraGameModeBase* DuraGameMode = Cast<ADuraGameModeBase>(UGameplayStatics::GetGameMode(this));  
+    // 存档数据只存在于服务器，客户端调用直接忽略
+    if(!HasAuthority()) return;
+
+    ADuraGameModeBase* DuraGameMode = Cast<ADuraGameModeBase>(UGameplayStatics::GetGameMode(this));
     if(DuraGameMode)
     {
         ULoadScreenSaveGame* SaveData = DuraGameMode->RetrieveInGameSaveData();
@@ -93,8 +96,6 @@ void ADuraCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
         SaveData->Vigor = UDuraAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 
         SaveData->bFirstTimeLoadIn = false;
-
-        if(!HasAuthority()) return;
 
         SaveData->SavedAbilities.Empty();
         UDuraAbilitySystemComponent* DuraASC = Cast<UDuraAbilitySystemComponent>(AbilitiesSystemComponent);
@@ -231,18 +232,21 @@ int32 ADuraCharacter::GetXP_Implementation() const
 int32 ADuraCharacter::FindLevelForXP_Implementation(int32 InXP) const
 {
     ADuraPlayerState* DuraPlayerState = CastChecked<ADuraPlayerState>(GetPlayerState());
+    if(!DuraPlayerState->LevelUpInfoDataAsset) return 1;
     return DuraPlayerState->LevelUpInfoDataAsset->FindLevelForXP(InXP);
 }
 
 int32 ADuraCharacter::GetAttributePointsReward_Implementation(int32 Level) const
 {
     ADuraPlayerState* DuraPlayerState = CastChecked<ADuraPlayerState>(GetPlayerState());
+    if(!DuraPlayerState->LevelUpInfoDataAsset || !DuraPlayerState->LevelUpInfoDataAsset->LevelUpInformation.IsValidIndex(Level)) return 0;
     return DuraPlayerState->LevelUpInfoDataAsset->LevelUpInformation[Level].AttributePointAward;
 }
 
 int32 ADuraCharacter::GetSpellPointsReward_Implementation(int32 Level) const
 {
     ADuraPlayerState* DuraPlayerState = CastChecked<ADuraPlayerState>(GetPlayerState());
+    if(!DuraPlayerState->LevelUpInfoDataAsset || !DuraPlayerState->LevelUpInfoDataAsset->LevelUpInformation.IsValidIndex(Level)) return 0;
     return DuraPlayerState->LevelUpInfoDataAsset->LevelUpInformation[Level].SpellPointAward;
 }
 
@@ -322,16 +326,18 @@ void ADuraCharacter::InitAbilityActorInfo()
 
 	AbilitiesSystemComponent = playerState->GetAbilitySystemComponent();
 	AttributeSet = playerState->GetAttributeSet();
-
-    OnASCRegistered.Broadcast(AbilitiesSystemComponent);
-    AbilitiesSystemComponent->RegisterGameplayTagEvent(FDuraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved)
-    .AddUObject(this, &ADuraCharacter::StunTagChanged);
-
-
 	check(AbilitiesSystemComponent);
+
+	// OnRep_PlayerState 可能多次触发（重新 Possess 等），先解绑再注册避免回调堆积
+	AbilitiesSystemComponent->RegisterGameplayTagEvent(FDuraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+	AbilitiesSystemComponent->RegisterGameplayTagEvent(FDuraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved)
+	.AddUObject(this, &ADuraCharacter::StunTagChanged);
+
+	OnASCRegistered.Broadcast(AbilitiesSystemComponent);
+
 	AbilitiesSystemComponent->InitAbilityActorInfo(playerState, this);
 
-	Cast<UDuraAbilitySystemComponent>(playerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
+	CastChecked<UDuraAbilitySystemComponent>(AbilitiesSystemComponent)->AbilityActorInfoSet();
 
 	if (ADuraPlayerController* PlayerController = Cast<ADuraPlayerController>(GetController()))
 	{

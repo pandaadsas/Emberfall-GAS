@@ -12,34 +12,35 @@ void UBTService_FindNearestPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, u
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	APawn* OwninigPawn = AIOwner->GetPawn();
+	// Pawn 已销毁但 Service 仍可能被 Tick，直接保持黑板旧值
+	APawn* OwningPawn = AIOwner ? AIOwner->GetPawn() : nullptr;
+	if(!OwningPawn) return;
 
-	const FName TargetTag = OwninigPawn->ActorHasTag(FName("Player")) ? FName("Enemy") : FName("Player");
+	const FName TargetTag = OwningPawn->ActorHasTag(FName("Player")) ? FName("Enemy") : FName("Player");
 
 	TArray<AActor*> ActorsWithTag;
-	UGameplayStatics::GetAllActorsWithTag(OwninigPawn, TargetTag, ActorsWithTag);
-	
-	float ClosetDistance = TNumericLimits<float>::Max();
-	AActor* ClosetActor = nullptr;
+	UGameplayStatics::GetAllActorsWithTag(OwningPawn, TargetTag, ActorsWithTag);
+
+	float ClosestDistance = TNumericLimits<float>::Max();
+	AActor* ClosestActor = nullptr;
 	for (AActor* Actor : ActorsWithTag)
 	{
-		//GEngine->AddOnScreenDebugMessage(2, .5f, FColor::Orange, *Actor->GetName());
-		if (IsValid(Actor) && IsValid(OwninigPawn))
+		if (IsValid(Actor) && IsValid(OwningPawn))
 		{
             if(ICombatInterface* Combat = Cast<ICombatInterface>(Actor))
             {
                 if(ICombatInterface::Execute_IsDead(Actor)) continue;
             }
 
-			const float Distance = OwninigPawn->GetDistanceTo(Actor);
-			if (Distance < ClosetDistance)
+			const float Distance = OwningPawn->GetDistanceTo(Actor);
+			if (Distance < ClosestDistance)
 			{
-				ClosetDistance = Distance;
-				ClosetActor = Actor;
+				ClosestDistance = Distance;
+				ClosestActor = Actor;
 			}
 		}
 	}
 
-	UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetToFollowSelector, ClosetActor);
-	UBTFunctionLibrary::SetBlackboardValueAsFloat(this, DistanceToTargetSelector, ClosetDistance);
+	UBTFunctionLibrary::SetBlackboardValueAsObject(this, TargetToFollowSelector, ClosestActor);
+	UBTFunctionLibrary::SetBlackboardValueAsFloat(this, DistanceToTargetSelector, ClosestDistance);
 }

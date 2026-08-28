@@ -85,9 +85,11 @@ USpellMenuWidgetController* UDuraAbilitySystemLibrary::GetSpellMenuWidgetControl
 void UDuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if(!CharacterClassInfo || !ASC) return;
 	FCharacterClassDefaultInfo ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
-	
+
 	AActor* AvatarActor = ASC->GetAvatarActor();
+	if(!AvatarActor) return;
 
 	FGameplayEffectContextHandle PrimaryAttributesContextHandle = ASC->MakeEffectContext();
 	PrimaryAttributesContextHandle.AddSourceObject(AvatarActor);
@@ -427,6 +429,9 @@ void UDuraAbilitySystemLibrary::GetClosestTargets(int32 MaxTargets, const TArray
 
 bool UDuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
 {
+    // 任一参与者已失效时按"敌对"处理，保证弹道等调用方不会在空指针上崩溃
+    if(!FirstActor || !SecondActor) return true;
+
     const bool bBothArePlayers = FirstActor->ActorHasTag(FName("Player")) && SecondActor->ActorHasTag(FName("Player"));
     const bool bBothAreEnemies = FirstActor->ActorHasTag(FName("Enemy")) && SecondActor->ActorHasTag(FName("Enemy"));
     const bool bFriends = bBothArePlayers || bBothAreEnemies;
@@ -437,6 +442,12 @@ bool UDuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 
 FGameplayEffectContextHandle UDuraAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams)
 {
+    // 公共蓝图接口：来源/目标 ASC 未赋值时直接忽略本次伤害请求
+    if(!DamageEffectParams.SourceAbilitySystemComponent || !DamageEffectParams.TargetAbilitySystemComponent)
+    {
+        return FGameplayEffectContextHandle();
+    }
+
     const AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 
     FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
@@ -451,10 +462,11 @@ FGameplayEffectContextHandle UDuraAbilitySystemLibrary::ApplyDamageEffect(const 
     SetRadialDamageOuterRadius(EffectContextHandle, DamageEffectParams.RadialDamageOuterRadius);
 
     const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(
-        DamageEffectParams.DamageGameplayEffectClass, 
-        DamageEffectParams.AbilityLevel, 
+        DamageEffectParams.DamageGameplayEffectClass,
+        DamageEffectParams.AbilityLevel,
         EffectContextHandle
     );
+    if(!SpecHandle.IsValid()) return EffectContextHandle;
 
     const FDuraGameplayTags& GameplayTags = FDuraGameplayTags::Get();
 

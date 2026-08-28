@@ -82,7 +82,8 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectSpec& Spec,
             const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Chance, false, -1.f);
 
             float TargetDebuffResistance = 0.f;
-            const FGameplayTag ResistanceTag = GameplayTags.DamageTypesToResistances[DamageType];
+            const FGameplayTag ResistanceTag = GameplayTags.DamageTypesToResistances.FindRef(DamageType);
+            if(!ResistanceTag.IsValid() || !InTagsToDefs.Contains(ResistanceTag)) continue;
             ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(InTagsToDefs[ResistanceTag], EvaluationParameters, TargetDebuffResistance);
             TargetDebuffResistance = FMath::Max<float>(TargetDebuffResistance, 0.f);
 
@@ -163,8 +164,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	{
 		const FGameplayTag DamageTypeTag = Pair.Key;
 		const FGameplayTag ResistanceTag = Pair.Value;
-		checkf(!TagsToCaptureDefs.Contains(DamageTypeTag),
-			TEXT("TagToCaptureDefs doesn't contain Tag: [%s] in ExecCalc_Damage"), *ResistanceTag.ToString())
+		checkf(TagsToCaptureDefs.Contains(ResistanceTag),
+			TEXT("TagsToCaptureDefs doesn't contain Tag: [%s] in ExecCalc_Damage"), *ResistanceTag.ToString())
 		const FGameplayEffectAttributeCaptureDefinition& CaptureDef = TagsToCaptureDefs[ResistanceTag];
 		
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag, false);

@@ -249,9 +249,10 @@ FGameplayAbilitySpec* UDuraAbilitySystemComponent::GetSpecFromAbilityTag(const F
 
 void UDuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
-    if(GetAvatarActor()->Implements<UPlayerInterface>())
+    AActor* Avatar = GetAvatarActor();
+    if(Avatar && Avatar->Implements<UPlayerInterface>())
     {
-        if(IPlayerInterface::Execute_GetAttributePoints(GetAvatarActor()) > 0)
+        if(IPlayerInterface::Execute_GetAttributePoints(Avatar) > 0)
         {
             ServerUpgradeAttribute(AttributeTag);
         }
@@ -260,20 +261,25 @@ void UDuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& Attribute
 
 void UDuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGameplayTag& AttributeTag)
 {
+    AActor* Avatar = GetAvatarActor();
+    if(!Avatar) return;
+
     FGameplayEventData Payload;
     Payload.EventTag = AttributeTag;
     Payload.EventMagnitude = 1.f;
 
-    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetAvatarActor(), AttributeTag, Payload);
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Avatar, AttributeTag, Payload);
 
-    if(GetAvatarActor()->Implements<UPlayerInterface>())
+    if(Avatar->Implements<UPlayerInterface>())
     {
-        IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+        IPlayerInterface::Execute_AddToAttributePoints(Avatar, -1);
     }
 }
 void UDuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 {
     UAbilityInfo* AbilityInfo = UDuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+    if(!AbilityInfo) return;
+
     for (const FDuraAbilityInfo& Info : AbilityInfo->AbilityInformation)
     {
         if(!Info.AbilityTag.IsValid()) continue;
@@ -296,9 +302,10 @@ void UDuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGa
 {
     if(FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
     {
-        if(GetAvatarActor()->Implements<UPlayerInterface>())
+        AActor* Avatar = GetAvatarActor();
+        if(Avatar && Avatar->Implements<UPlayerInterface>())
         {
-            IPlayerInterface::Execute_AddToSpellPoints(GetAvatarActor(), -1);
+            IPlayerInterface::Execute_AddToSpellPoints(Avatar, -1);
         }
 
         const FDuraGameplayTags& GameplayTags = FDuraGameplayTags::Get();

@@ -100,7 +100,7 @@ void UDuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float d
 
 void UDuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 {
-    if(Props.TargetCharacter->Implements<UCombatInterface>())
+    if(IsValid(Props.TargetCharacter) && Props.TargetCharacter->Implements<UCombatInterface>())
     {
         const int32 TargetLevel = ICombatInterface::Execute_GetPlayerLevel(Props.TargetCharacter);
         const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
@@ -374,8 +374,10 @@ void UDuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 
 void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
 {
+    // 周期伤害持续结算期间，来源/目标的 ASC 可能已随 Actor 销毁而失效
+    if(!Props.SourceASC || !Props.TargetASC) return;
+
     const FDuraGameplayTags& GameplayTags = FDuraGameplayTags::Get();
-    
 
     const FGameplayTag DamageType = UDuraAbilitySystemLibrary::GetDamageType(Props.EffectContextHandle);
     const float DebuffDamage = UDuraAbilitySystemLibrary::GetDebuffDamage(Props.EffectContextHandle);
@@ -393,8 +395,10 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
     //Add Target Tag Component
     UTargetTagsGameplayEffectComponent& TargetTagComponent = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
     FGameplayTagContainer TagContainer;
-    FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuffs[DamageType];
-    TagContainer.AddTag(DebuffTag);  
+    // UE5.8 起 TMap::operator[] 对缺失键为断言语义，配置缺失时用 FindRef 安全降级
+    FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuffs.FindRef(DamageType);
+    if(!DebuffTag.IsValid()) return;
+    TagContainer.AddTag(DebuffTag);
     if(DebuffTag.MatchesTagExact(GameplayTags.Debuff_Stun))
     {
         TagContainer.AddTag(GameplayTags.Player_Block_CursorTrace);

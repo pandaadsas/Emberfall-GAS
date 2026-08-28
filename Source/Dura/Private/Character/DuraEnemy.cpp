@@ -155,10 +155,14 @@ void ADuraEnemy::PossessedBy(AController* NewController)
 	if (!HasAuthority()) return;
 
 	DuraAIController = Cast<ADuraAIController>(NewController);
-	DuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	DuraAIController->RunBehaviorTree(BehaviorTree);
-	DuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
-	DuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
+	// 行为树/黑板未配置时跳过 AI 初始化，避免空指针崩溃
+	if(DuraAIController && BehaviorTree && DuraAIController->GetBlackboardComponent())
+	{
+		DuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		DuraAIController->RunBehaviorTree(BehaviorTree);
+		DuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+		DuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
+	}
 }
 
 int32 ADuraEnemy::GetPlayerLevel_Implementation() const
@@ -174,7 +178,10 @@ void ADuraEnemy::SetMoveToLocation_Implementation(FVector& OutDestination)
 void ADuraEnemy::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(LifeSpan);
-    if(DuraAIController) DuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+    if(DuraAIController && DuraAIController->GetBlackboardComponent())
+    {
+        DuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+    }
     SpawnLoot();
 	Super::Die(DeathImpulse);
 }

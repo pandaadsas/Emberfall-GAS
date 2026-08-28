@@ -62,7 +62,6 @@ void UMVVM_LoadScreen::LoadSavedSlotDatas()
         LoadSlot.Value->SetMapName(SaveGame->MapName);
         LoadSlot.Value->SetPlayerName(SaveGame->PlayerName);
         LoadSlot.Value->SetPlayerLevel(SaveGame->PlayerLevel);
-        LoadSlot.Value->SetPlayerLevel(SaveGame->PlayerLevel);
     }
 }
 

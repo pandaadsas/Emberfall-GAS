@@ -64,10 +64,14 @@ void UDuraOverlayWidgetController::BindCallbacksToDependencies()
 			for (const FGameplayTag& Tag : AssetTags)
 			{
 				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				if (Tag.MatchesTag(MessageTag))
+				if (Tag.MatchesTag(MessageTag) && MessageWidgetDataTable)
 				{
 					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-					MessageWidgetRowDelegate.Broadcast(*Row);
+					// 数据表缺少对应 Message 行时静默跳过
+					if(Row)
+					{
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
 				}
 			}
 		}
@@ -87,6 +91,7 @@ void UDuraOverlayWidgetController::OnAbilityEquipped(const FGameplayTag& Ability
     //Broadcast empty info if PrevSlot is a valid slot. Only if equipping an already-equipped all
     AbilityInfoDelegate.Broadcast(LastSlotInfo);
 
+    if(!AbilityInfoDataTable) return;
     FDuraAbilityInfo Info = AbilityInfoDataTable->FindAbilityInfoForTag(AbilityTag);
     Info.StatusTag = StatusTag;
     Info.InputTag = Slot;

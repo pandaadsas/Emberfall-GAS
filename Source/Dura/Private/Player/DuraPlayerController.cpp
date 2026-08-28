@@ -44,7 +44,8 @@ void ADuraPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
     if(!IsValid(MagicCircle))
     {
         MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
-        if(DecalMaterial)
+        // 生成失败（MagicCircleClass 未配置）时跳过材质设置
+        if(IsValid(MagicCircle) && DecalMaterial)
         {
             MagicCircle->SetMaterial(0, DecalMaterial);
         }

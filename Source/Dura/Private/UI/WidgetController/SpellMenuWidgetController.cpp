@@ -59,7 +59,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 
 void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
 {
-    if(bWaitingForEquipSelection)
+    if(bWaitingForEquipSelection && AbilityInfoDataTable)
     {
         const FGameplayTag SelectedAbilityType = AbilityInfoDataTable->FindAbilityInfoForTag(AbilityTag).AbilityType;
         StopWaitForEquipDelegate.Broadcast(SelectedAbilityType);
@@ -109,7 +109,7 @@ void USpellMenuWidgetController::SpendPointButtonPressed()
 
 void USpellMenuWidgetController::GlobeDeSelect()
 {
-    if(bWaitingForEquipSelection)
+    if(bWaitingForEquipSelection && AbilityInfoDataTable)
     {
         const FGameplayTag SelectedAbilityType = AbilityInfoDataTable->FindAbilityInfoForTag(SelectedAbility.AbilityTag).AbilityType;
         StopWaitForEquipDelegate.Broadcast(SelectedAbilityType);
@@ -123,6 +123,8 @@ void USpellMenuWidgetController::GlobeDeSelect()
 
 void USpellMenuWidgetController::EquipButtonPressed()
 {
+    if(!AbilityInfoDataTable) return;
+
     const FGameplayTag& AbilityType = AbilityInfoDataTable->FindAbilityInfoForTag(SelectedAbility.AbilityTag).AbilityType;
     
     WaitForEquipDelegate.Broadcast(AbilityType);
@@ -137,7 +139,7 @@ void USpellMenuWidgetController::EquipButtonPressed()
 
 void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType)
 {
-    if(!bWaitingForEquipSelection) return;
+    if(!bWaitingForEquipSelection || !AbilityInfoDataTable) return;
 
     //Check seleted ability against the slot's ability type
     //( don't equip an offensive spell in a passive slot and vice versa )
@@ -161,12 +163,15 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
     //Broadcast empty info if PrevSlot is a valid slot. Only if equipping an already-equipped all
     AbilityInfoDelegate.Broadcast(LastSlotInfo);
 
-    FDuraAbilityInfo Info = AbilityInfoDataTable->FindAbilityInfoForTag(AbilityTag);
-    Info.StatusTag = StatusTag;
-    Info.InputTag = Slot;
-    AbilityInfoDelegate.Broadcast(Info);
+    if(AbilityInfoDataTable)
+    {
+        FDuraAbilityInfo Info = AbilityInfoDataTable->FindAbilityInfoForTag(AbilityTag);
+        Info.StatusTag = StatusTag;
+        Info.InputTag = Slot;
+        AbilityInfoDelegate.Broadcast(Info);
 
-    StopWaitForEquipDelegate.Broadcast(AbilityInfoDataTable->FindAbilityInfoForTag(AbilityTag).AbilityType);
+        StopWaitForEquipDelegate.Broadcast(AbilityInfoDataTable->FindAbilityInfoForTag(AbilityTag).AbilityType);
+    }
 
     SpellGlobeReassignedDelegate.Broadcast(AbilityTag);
     GlobeDeSelect();
