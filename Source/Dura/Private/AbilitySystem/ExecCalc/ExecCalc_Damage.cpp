@@ -76,9 +76,9 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectSpec& Spec,
         const FGameplayTag& DamageType = Pair.Key;
         const FGameplayTag& DebuffType = Pair.Value;
         const float TypeDamage = Spec.GetSetByCallerMagnitude(DamageType, false, -1.f);
-        if( TypeDamage > -.5f ) // .5 padding for floating point precision
+        if( TypeDamage > -.5f ) // 0.5 的余量用于浮点精度
         {
-            // Determine if there was a successful debuff
+            // 判断是否成功触发了减益
             const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Chance, false, -1.f);
 
             float TargetDebuffResistance = 0.f;
@@ -153,11 +153,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
 
-    // Debuff
+    // 减益
     DetermineDebuff(Spec, ExecutionParams, EvaluationParameters, TagsToCaptureDefs);
 
 
-	// Get Damage Set by Caller Magnitude
+	// 获取通过 SetByCaller 设置的伤害数值
     const FDuraGameplayTags& GameplayTags = FDuraGameplayTags::Get();
 	float Damage = 0.0f;
 	for (const TTuple<FGameplayTag, FGameplayTag>& Pair: GameplayTags.DamageTypesToResistances)
@@ -184,12 +184,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
         //判断是否RadialDamage
         if(UDuraAbilitySystemLibrary::IsRadialDamage(EffectContextHandle))
         {
-            // 1. override TakeDamage in DuraCharacterBase *
-            // 2. create delegate OnDamageDelegate, broadcast damage received in TakeDamage *
-            // 3. Bind lamabda to OnDamageDelegate on the Victim here. *
-            // 4. Call UGameplayStatics::ApplyRadialDamageWithFalloff to cause damage *
-            //      (this will result in TakeDamage being called)
-            // 5. In lambda, set DamageTypeValue to the damage received from the broadcast *
+            // 1. 在 DuraCharacterBase 中重写 TakeDamage *
+            // 2. 创建委托 OnDamageDelegate，在 TakeDamage 中广播收到的伤害 *
+            // 3. 在此处将 lambda 绑定到受害者的 OnDamageDelegate 上 *
+            // 4. 调用 UGameplayStatics::ApplyRadialDamageWithFalloff 造成伤害 *
+            //      （这会导致 TakeDamage 被调用）
+            // 5. 在 lambda 中，将 DamageTypeValue 设为广播传回的所受伤害 *
 
             if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetAvatar))
             {
@@ -220,7 +220,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Damage += DamageTypeValue;
 	}
 
-	// Capture BlockChance on Target, and determine if there was a successful Block
+	// 捕获目标的格挡几率，并判断是否格挡成功
 	float TargetBlockChance = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().Block_ChanceDef, EvaluationParameters, TargetBlockChance);
 	TargetBlockChance = FMath::Max<float>(0.0f, TargetBlockChance);
@@ -229,7 +229,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	UDuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
 
-	// If Block, Halve the damage.
+	// 若格挡成功，伤害减半。
 	Damage = bBlocked ? Damage * 0.5f : Damage;
 
 	float TargetArmor = 0.0f;
@@ -243,12 +243,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	UCharacterClassInfo* CharacterClassInfo = UDuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 	if (CharacterClassInfo && CharacterClassInfo->DamageCalculationCoefficients)
 	{
-	// ArmorPenetration ignores a percentage of the Target's Armor
+	// 护甲穿透可无视目标护甲的一定百分比
 	const FRealCurve* ArmorPenetrationCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"), FString());
 	const float ArmorPenetrationCoeff = ArmorPenetrationCurve->Eval(SourcePlayerLevel);
 	const float EffectiveArmor = TargetArmor * (100 - SourceArmorPenetration * ArmorPenetrationCoeff) / 100.f;
 
-	// Armor ignore percentage of the Target's Damage
+	// 护甲按一定百分比减免目标所受伤害
 	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
 	const float EffectiveArmorCoeff = EffectiveArmorCurve->Eval(TargetPlayerLevel);
 	Damage *= (100 - EffectiveArmor * EffectiveArmorCoeff) / 100.f;
@@ -279,7 +279,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	UDuraAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bCriticalHit);
 
-	// double damage plus critical hit damage if critical 
+	// 暴击时伤害翻倍并附加暴击伤害加成
 	Damage = bCriticalHit ? Damage * 2 + SourceCritHitDamage : Damage;
 
 	const FGameplayModifierEvaluatedData EvaluatedData(UDuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);

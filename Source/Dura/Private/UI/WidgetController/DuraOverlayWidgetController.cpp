@@ -88,7 +88,7 @@ void UDuraOverlayWidgetController::OnAbilityEquipped(const FGameplayTag& Ability
     LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_UnLocked;
     LastSlotInfo.InputTag = PrevSlot;
     LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
-    //Broadcast empty info if PrevSlot is a valid slot. Only if equipping an already-equipped all
+    //若 PrevSlot 是有效槽位则广播空信息（用于清空已装备技能的旧槽位显示）
     AbilityInfoDelegate.Broadcast(LastSlotInfo);
 
     if(!AbilityInfoDataTable) return;

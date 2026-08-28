@@ -26,7 +26,7 @@ class DURA_API UDuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	
 public:
     
-    /* Widget Controller */
+    /* Widget 控制器 */
 
     UFUNCTION(BlueprintPure, Category = "DuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, 
@@ -43,7 +43,7 @@ public:
 	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
 
 
-    /* Ability System Startup */
+    /* 能力系统初始化 */
 
 	UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(const UObject* WorldContextObject, 
@@ -65,7 +65,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|CharacterClassDefaults", meta = (DefaultToSelf = "WorldContextObject"))
 	static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 
-    /* Effect Comtext Getter */
+    /* 效果上下文读取器 */
 
 	UFUNCTION(BlueprintPure, Category = "DuraAbilitySystemLibrary|GameplayEffects")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
@@ -106,7 +106,7 @@ public:
     UFUNCTION(BlueprintPure, Category = "DuraAbilitySystemLibrary|GameplayEffects")
     static FVector GetRadialDamageOrigin(const FGameplayEffectContextHandle& EffectContextHandle);
 
-    /* Effect Comtext Setter */
+    /* 效果上下文设置器 */
 
 	UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit);
@@ -147,7 +147,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayEffects")
     static void SetRadialDamageOrigin(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, FVector InRadialDamageOrigin);
 
-    /* Gameplay Mechanics */
+    /* 游戏机制 */
 
 	UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayMechanics")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, 
@@ -170,7 +170,7 @@ public:
     
     static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject,const ECharacterClass CharacterClass,const int32 CharacterLevel);
 
-    /* Damage Effect Params */
+    /* 伤害效果参数 */
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|DamageEffect")
     static void SetIsRadialDamageEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, bool bIsRadial, float InnerRadius, float OuterRadius, FVector Origin);
 

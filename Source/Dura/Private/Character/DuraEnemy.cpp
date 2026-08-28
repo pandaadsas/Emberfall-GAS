@@ -172,7 +172,7 @@ int32 ADuraEnemy::GetPlayerLevel_Implementation() const
 
 void ADuraEnemy::SetMoveToLocation_Implementation(FVector& OutDestination)
 {
-    // Do not change OutDestination
+    // 不要修改 OutDestination
 }
 
 void ADuraEnemy::Die(const FVector& DeathImpulse)

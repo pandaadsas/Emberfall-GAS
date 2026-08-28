@@ -94,7 +94,7 @@ private:
 
 	UDuraAbilitySystemComponent* GetASC();
 
-	// Click to Move 
+	// 点击移动
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.0f;
 	float ShortPressThreshold = 0.5f;

@@ -9,7 +9,7 @@ FDuraGameplayTags FDuraGameplayTags::DuraGameplayTags;
 void FDuraGameplayTags::InitializeNativeGameplayTags()
 {
 	/*
-	 * Primary Attributes
+	 * 主属性
 	 */
 	DuraGameplayTags.Attributes_Primary_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Strength"),
@@ -28,7 +28,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Increases Health"));
 
 	/*
-	 * Secondary Attributes
+	 * 次级属性
 	 */
 	DuraGameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.Armor"), 
@@ -72,7 +72,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 
 
     /*
-    * Meta Attributes
+    * 元属性
     */
     DuraGameplayTags.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Meta.IncomingXP"), 
@@ -80,7 +80,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
     
 
 	/*
-	 * Input Tags
+	 * 输入标签
 	 */
 
 	DuraGameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -132,7 +132,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 	);
 
 	/*
-	* Damage Types
+	* 伤害类型
 	*/
 
 	DuraGameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -156,7 +156,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 	);
 
     /*
-	* Damage Resistances
+	* 伤害抗性
 	*/
 
 	DuraGameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -179,7 +179,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Physical Resistance Type")
 	);
 
-    /* Debuff */
+    /* 减益 */
     DuraGameplayTags.Debuff_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Debuff.Burn"),
 		FString("Debuff for fire damage")
@@ -221,13 +221,13 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 	);
 
 	
-	/* Map of Damage Types to Resistance */
+	/* 伤害类型到抗性的映射 */
 	DuraGameplayTags.DamageTypesToResistances.Add(DuraGameplayTags.Damage_Arcane, DuraGameplayTags.Attributes_Resistance_Arcane);
 	DuraGameplayTags.DamageTypesToResistances.Add(DuraGameplayTags.Damage_Fire, DuraGameplayTags.Attributes_Resistance_Fire);
 	DuraGameplayTags.DamageTypesToResistances.Add(DuraGameplayTags.Damage_Lightning, DuraGameplayTags.Attributes_Resistance_Lightning);
 	DuraGameplayTags.DamageTypesToResistances.Add(DuraGameplayTags.Damage_Physical, DuraGameplayTags.Attributes_Resistance_Physical);
 
-    /* Map of Damage Types to Debuffs */
+    /* 伤害类型到减益的映射 */
     DuraGameplayTags.DamageTypesToDebuffs.Add(DuraGameplayTags.Damage_Arcane, DuraGameplayTags.Debuff_Arcane);
 	DuraGameplayTags.DamageTypesToDebuffs.Add(DuraGameplayTags.Damage_Fire, DuraGameplayTags.Debuff_Burn);
 	DuraGameplayTags.DamageTypesToDebuffs.Add(DuraGameplayTags.Damage_Lightning, DuraGameplayTags.Debuff_Stun);
@@ -277,7 +277,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
     
 
     /*
-        Passive Spells
+        被动技能
     */
     DuraGameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Passive.HaloOfProtection"),
@@ -336,7 +336,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 	);
 
     /*
-	* CoolDown
+	* 冷却
 	*/
 
     DuraGameplayTags.CoolDown_Fire_Bolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -348,7 +348,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 
     
 	/*
-	* CombatSocket
+	* 战斗插槽
 	*/
 	DuraGameplayTags.CombatSocket_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("CombatSocket.Weapon"),
@@ -368,7 +368,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
         
 
     /*
-    * Montage Tags
+    * 蒙太奇标签
     */
     DuraGameplayTags.Montage_Attack_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.1"),
@@ -387,7 +387,7 @@ void FDuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Attack 4"));
 
 
-    /* Player Tags */
+    /* 玩家标签 */
     DuraGameplayTags.Player_Block_CursorTrace = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Player.Block.CursorTrace"),
 		FString("Block tracing under the cursor"));

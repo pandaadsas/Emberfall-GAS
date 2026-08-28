@@ -59,7 +59,7 @@ struct FDamageEffectParams
     UPROPERTY(BlueprintReadWrite)
     FVector KnockbackForce = FVector::ZeroVector;
 
-    //RadialDamage etc..
+    // 径向伤害等..
     UPROPERTY(BlueprintReadWrite)
     bool bIsRadialDamage = false;
 
@@ -120,7 +120,7 @@ public:
 		*NewContext = *this;
 		if (GetHitResult())
 		{
-			// Does a deep copy of the hit result
+			// 对命中结果进行深拷贝
 			NewContext->AddHitResult(*GetHitResult(), true);
 		}
 		return NewContext;
@@ -155,7 +155,7 @@ protected:
     UPROPERTY()
     FVector KnockbackForce = FVector::ZeroVector;
 
-    //RadialDamage etc..
+    // 径向伤害等..
     UPROPERTY()
     bool bIsRadialDamage = false;
 

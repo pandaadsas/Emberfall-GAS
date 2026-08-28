@@ -12,57 +12,57 @@ FString UElectrocute::GetDescription(int32 Level)
     if(Level == 1)
     {
         return FString::Printf(TEXT(
-            //Title
-            "<Title>ELECTROCUTE</>\n\n"
+            //标题
+            "<Title>电击</>\n\n"
 
-            // Level
-            "<Small>Level: </><Level>%d</>\n"
+            //等级
+            "<Small>等级：</><Level>%d</>\n"
 
-            //ManaCost
-            "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+            //法力消耗
+            "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-             //Cooldown
-            "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+             //冷却时间
+            "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-            "\n<Default>Emits a beam of lightning, connecting with the target, repeatedly causing</>"
+            "\n<Default>射出一道闪电光束连接目标，反复造成</>"
 
-            //Damage
+            //伤害
             "<Damage>%d</>"
-            "<Default> lightning damage with a chance to stun</>"), 
+            "<Default> 点闪电伤害，并有概率眩晕</>"),
 
-            //Values
-            Level, 
-            ManaCost, 
+            //数值
+            Level,
+            ManaCost,
             Cooldown,
             DamageValue);
     }
     else
     {
         return FString::Printf(TEXT(
-            //Title
-            "<Title>ELECTROCUTE</>\n\n"
+            //标题
+            "<Title>电击</>\n\n"
 
-            // Level
-            "<Small>Level: </><Level>%d</>\n"
+            //等级
+            "<Small>等级：</><Level>%d</>\n"
 
-            //ManaCost
-            "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+            //法力消耗
+            "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-            //Cooldown
-            "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+            //冷却时间
+            "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-            //Addition Number of Shock Targets
-            "\n<Default>Emits a beam of lightning, propagating to %d additional targets nearby, causing </>"
+            //额外电击目标数量
+            "\n<Default>射出一道闪电光束，传导至附近 %d 个额外目标，造成</>"
 
-            //Damage
+            //伤害
             "<Damage>%d</>"
-            "<Default> lightning damage with a chance to stun</>"), 
+            "<Default> 点闪电伤害，并有概率眩晕</>"),
 
-            //Values
-            Level, 
-            ManaCost, 
+            //数值
+            Level,
+            ManaCost,
             Cooldown,
-            FMath::Min(Level, MaxNumShockTargets), 
+            FMath::Min(Level, MaxNumShockTargets),
             DamageValue);
     }
 }
@@ -74,24 +74,24 @@ FString UElectrocute::GetNextLevelDescription(int32 Level)
     const float Cooldown = GetCooldown(Level);
     
     return FString::Printf(TEXT(
-        //Title
-        "<Title>Next Level: </>\n\n"
+        //标题
+        "<Title>下一级：</>\n\n"
 
-        // Level
-        "<Small>Level: </><Level>%d</>\n"
+        //等级
+        "<Small>等级：</><Level>%d</>\n"
 
-        //ManaCost
-        "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+        //法力消耗
+        "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-        //Cooldown
-        "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+        //冷却时间
+        "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-        //Addition Number of Shock Targets
-        "\n<Default>Emits a beam of lightning, propagating to %d additional targets nearby, causing </>"
+        //额外电击目标数量
+        "\n<Default>射出一道闪电光束，传导至附近 %d 个额外目标，造成</>"
 
-        //Damage
+        //伤害
         "<Damage>%d</>"
-        "<Default> lightning damage with a chance to stun</>"), 
+        "<Default> 点闪电伤害，并有概率眩晕</>"),
 
         //Values
         Level, 

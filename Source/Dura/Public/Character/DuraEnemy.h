@@ -23,21 +23,21 @@ class DURA_API ADuraEnemy : public ADuraCharacterBase, public IEnemyInterface, p
 public:
 	ADuraEnemy();
 
-	//** IEnemyInterface
+	//** 敌人接口（IEnemyInterface）
     virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() const override;
-	//** end IEnemyInterface
+	//** 敌人接口结束（IEnemyInterface）
 
-    //** IHighlightInterface
+    //** 高亮接口（IHighlightInterface）
     virtual void HighlightActor_Implementation() override;
 	virtual void UnHighlightActor_Implementation() override;
     virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;
-    //** end IHighlightInterface
+    //** 高亮接口结束（IHighlightInterface）
 
-	//** ICombatInterface
+	//** 战斗接口（ICombatInterface）
 	virtual int32 GetPlayerLevel_Implementation() const override;
 	virtual void Die(const FVector& DeathImpulse) override;
-	//** End ICombatInterface
+	//** 战斗接口结束（ICombatInterface）
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;

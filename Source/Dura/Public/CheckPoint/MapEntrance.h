@@ -16,9 +16,9 @@ class DURA_API AMapEntrance : public ACheckPoint
 public:
     AMapEntrance(const FObjectInitializer& ObjectInitializer);
 
-    /* Highlight Interface */
+    /* 高亮接口 */
     virtual void HighlightActor_Implementation() override;
-    /* End Hightlight Interface */
+    /* 高亮接口结束 */
 
     virtual void LoadActor_Implementation() override;
 

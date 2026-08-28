@@ -20,13 +20,13 @@ UDuraAttributeSet::UDuraAttributeSet()
 {
 	const FDuraGameplayTags& GameplayTags = FDuraGameplayTags::Get();
 
-	/* Primary Attributes */
+	/* 主属性 */
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength, GetStrengthAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence, GetIntelligenceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Resilience, GetResilienceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Vigor, GetVigorAttribute);
 
-	/* Secondary Attributes */
+	/* 次要属性 */
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Armor, GetArmorAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Armor_Penetration, GetArmor_PenetrationAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Block_Chance, GetBlock_ChanceAttribute);
@@ -38,7 +38,7 @@ UDuraAttributeSet::UDuraAttributeSet()
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana, GetMaxManaAttribute);
 
-	/* Resistance Attributes */
+	/* 抗性属性 */
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Fire, GetFireResistanceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Lightning, GetLightningResistanceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Arcane, GetArcaneResistanceAttribute);
@@ -151,19 +151,19 @@ void UDuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	/* Vital Attributes*/
+	/* 生命法力属性*/
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 
-	/* Primary Attributes */
+	/* 主属性 */
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 
-	/* Secondary Attributes */
+	/* 次要属性 */
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, Armor_Penetration, COND_None, REPNOTIFY_Always);
@@ -176,7 +176,7 @@ void UDuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 
-	/* Resistance Attributes */
+	/* 抗性属性 */
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, FireResistance, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDuraAttributeSet, LightningResistance, COND_None, REPNOTIFY_Always);
@@ -327,7 +327,7 @@ void UDuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
         if(UDuraAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle) && 
           Props.TargetCharacter != Props.SourceCharacter)
         {
-            //Handle Debuff
+            //处理减益
             Debuff(Props);
         }
 	}
@@ -338,8 +338,8 @@ void UDuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
     const float LocalIncomingXP = GetIncomingXP();
     SetIncomingXP(0.f);
         
-    //TODO: See if we should level up
-    // Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to ImcomingXP
+    //TODO: 查看是否应该升级
+    // 来源角色即为所有者，因为 GA_ListenForEvents 应用了 GE_EventBasedEffect，累加到 ImcomingXP
     if(IsValid(Props.SourceCharacter) && Props.SourceCharacter->Implements<UCombatInterface>() && Props.SourceCharacter->Implements<UPlayerInterface>())
     {
         const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
@@ -384,7 +384,7 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
     const float DebuffDuration = UDuraAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
     const float DebuffFrequency = UDuraAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
 
-    //Create Dynamic GameplayEffect
+    //创建动态 GameplayEffect
     FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
     UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
     
@@ -392,7 +392,7 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
     Effect->Period = DebuffFrequency;
     Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 
-    //Add Target Tag Component
+    //添加目标标签组件
     UTargetTagsGameplayEffectComponent& TargetTagComponent = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
     FGameplayTagContainer TagContainer;
     // UE5.8 起 TMap::operator[] 对缺失键为断言语义，配置缺失时用 FindRef 安全降级
@@ -409,7 +409,7 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
     FInheritedTagContainer InheritedTagContainer;
     InheritedTagContainer.Added = TagContainer;
     TargetTagComponent.SetAndApplyTargetTagChanges(InheritedTagContainer);
-    //End Add Target Tag Component
+    //结束添加目标标签组件
 
     // 引擎 5.7 起将 StackingType 标记为转私有，但运行时 setter 未导出（SetStackingType 仅限编辑器构建），
     // 因此这里保留直接赋值并压制弃用警告；升级引擎若提供导出的 setter 再替换。
@@ -440,7 +440,7 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
 
 void UDuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
-	// Source = causer of the effect, Target = target of the effect (owner of this AS)
+	// 来源 = 效果的施加者，目标 = 效果的作用对象（本属性集的拥有者）
 
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
 	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();

@@ -19,7 +19,7 @@ public:
 	static void InitializeNativeGameplayTags();
 
 	/*
-	* Primary Attributes
+	* 主属性
 	*/
 	FGameplayTag Attributes_Primary_Strength;
 	FGameplayTag Attributes_Primary_Intelligence;
@@ -27,7 +27,7 @@ public:
 	FGameplayTag Attributes_Primary_Vigor;
 
 	/*
-	* Secondary Attributes
+	* 次要属性
 	*/
 	FGameplayTag Attributes_Secondary_Armor;
 	FGameplayTag Attributes_Secondary_Armor_Penetration;
@@ -43,7 +43,7 @@ public:
     FGameplayTag Attributes_Meta_IncomingXP;
 
 	/*
-	* InputTag
+	* 输入标签（InputTag）
 	*/
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
@@ -54,20 +54,20 @@ public:
 	FGameplayTag InputTag_Passive_1;
 	FGameplayTag InputTag_Passive_2;
 
-	/* DamageTag */
+	/* 伤害标签 */
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
 
-    /* Attributes_Resistance */
+    /* 抗性属性（Attributes_Resistance） */
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Physical;
 
-    /* Debuff Tag */
+    /* 减益标签 */
     FGameplayTag Debuff_Burn;
     FGameplayTag Debuff_Stun;
     FGameplayTag Debuff_Arcane;
@@ -78,7 +78,7 @@ public:
     FGameplayTag Debuff_Duration;
     FGameplayTag Debuff_Frequency;
 
-    /* Abilities */
+    /* 能力 */
     FGameplayTag Abilities_None;
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
@@ -109,7 +109,7 @@ public:
 	FGameplayTag CoolDown_Fire_Bolt;
 
 	/*
-	* CombatSocket
+	* 战斗插槽（CombatSocket）
 	*/
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;
@@ -117,7 +117,7 @@ public:
 	FGameplayTag CombatSocket_Tail;
 
     /*
-	* Montage Attack
+	* 蒙太奇攻击（Montage Attack）
 	*/
     FGameplayTag Montage_Attack_1;
 	FGameplayTag Montage_Attack_2;

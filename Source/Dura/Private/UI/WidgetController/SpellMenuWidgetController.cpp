@@ -141,8 +141,8 @@ void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& SlotTa
 {
     if(!bWaitingForEquipSelection || !AbilityInfoDataTable) return;
 
-    //Check seleted ability against the slot's ability type
-    //( don't equip an offensive spell in a passive slot and vice versa )
+    //校验所选技能与槽位的类型是否匹配
+    //（攻击型技能不能装进被动槽，反之亦然）
     const FGameplayTag& SelectedAbilityType = AbilityInfoDataTable->FindAbilityInfoForTag(SelectedAbility.AbilityTag).AbilityType;
     if(!SelectedAbilityType.MatchesTagExact(AbilityType)) return;
 
@@ -160,7 +160,7 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
     LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_UnLocked;
     LastSlotInfo.InputTag = PrevSlot;
     LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
-    //Broadcast empty info if PrevSlot is a valid slot. Only if equipping an already-equipped all
+    //若 PrevSlot 是有效槽位则广播空信息（用于清空已装备技能的旧槽位显示）
     AbilityInfoDelegate.Broadcast(LastSlotInfo);
 
     if(AbilityInfoDataTable)

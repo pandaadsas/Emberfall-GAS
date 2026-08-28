@@ -12,56 +12,56 @@ FString UArcaneShards::GetDescription(int32 Level)
     if(Level == 1)
     {
         return FString::Printf(TEXT(
-            //Title
-            "<Title>ARCANE SHARDS</>\n\n"
+            //标题
+            "<Title>奥术碎片</>\n\n"
 
-            // Level
-            "<Small>Level: </><Level>%d</>\n"
+            //等级
+            "<Small>等级：</><Level>%d</>\n"
 
-            //ManaCost
-            "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+            //法力消耗
+            "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-             //Cooldown
-            "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+             //冷却时间
+            "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-            "\n<Default>Summon a shards of arcane energy, causing radial arcane damage of </>"
+            "\n<Default>召唤一枚奥术能量碎片，造成</>"
 
-            //Damage
+            //伤害
             "<Damage>%d</>"
-            "<Default> at the shard origin.</>"), 
+            "<Default> 点径向奥术伤害。</>"),
 
-            //Values
-            Level, 
-            ManaCost, 
+            //数值
+            Level,
+            ManaCost,
             Cooldown,
             DamageValue);
     }
     else
     {
         return FString::Printf(TEXT(
-            //Title
-            "<Title>ARCANE SHARDS</>\n\n"
+            //标题
+            "<Title>奥术碎片</>\n\n"
 
-            // Level
-            "<Small>Level: </><Level>%d</>\n"
+            //等级
+            "<Small>等级：</><Level>%d</>\n"
 
-            //ManaCost
-            "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+            //法力消耗
+            "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-            //Cooldown
-            "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+            //冷却时间
+            "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-            //Addition Number of Shock Targets
-            "\n<Default>Summon %d shards of arcane energy, causing radial arcane damage of </>"
+            //额外电击目标数量
+            "\n<Default>召唤 %d 枚奥术能量碎片，造成径向奥术伤害</>"
 
-            //Damage
-            "<Damage>%d</>"), 
+            //伤害
+            "<Damage>%d</>"),
 
-            //Values
-            Level, 
-            ManaCost, 
+            //数值
+            Level,
+            ManaCost,
             Cooldown,
-            FMath::Min(Level, MaxNumShards), 
+            FMath::Min(Level, MaxNumShards),
             DamageValue);
     }
 }
@@ -73,28 +73,28 @@ FString UArcaneShards::GetNextLevelDescription(int32 Level)
     const float Cooldown = GetCooldown(Level);
 
     return FString::Printf(TEXT(
-        //Title
-        "<Title>Next Level: </>\n\n"
+        //标题
+        "<Title>下一级：</>\n\n"
 
-        // Level
-        "<Small>Level: </><Level>%d</>\n"
+        //等级
+        "<Small>等级：</><Level>%d</>\n"
 
-        //ManaCost
-        "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+        //法力消耗
+        "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-        //Cooldown
-        "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+        //冷却时间
+        "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-        //Addition Number of Shock Targets
-        "\n<Default>Summon %d shards of arcane energy, causing radial arcane damage of </>"
+        //额外电击目标数量
+        "\n<Default>召唤 %d 枚奥术能量碎片，造成径向奥术伤害</>"
 
-        //Damage
-        "<Damage>%d</>"), 
+        //伤害
+        "<Damage>%d</>"),
 
-        //Values
-        Level, 
-        ManaCost, 
+        //数值
+        Level,
+        ManaCost,
         Cooldown,
-        FMath::Min(Level, MaxNumShards), 
+        FMath::Min(Level, MaxNumShards),
         DamageValue);
 }

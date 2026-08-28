@@ -337,13 +337,13 @@ void UDuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
         const bool bStatusValid = (Status == GameplayTags.Abilities_Status_Equipped || Status == GameplayTags.Abilities_Status_UnLocked);
         if(bStatusValid)
         {
-            //Handle activation / deactivation for passive abilities
+            //处理被动能力的激活 / 停用
             
-            if(!SlotIsEmpty(Slot)) //There is an ability in this slot already. Deactivate and clear its slot
+            if(!SlotIsEmpty(Slot)) //此槽位中已有能力。停用它并清空其槽位
             {
                 if(FGameplayAbilitySpec* SpecWithSlot = GetSpecWithSlot(Slot))
                 {
-                    // is that ability the same as this ability? If so , we can return early.
+                    // 该能力是否与当前能力相同？如果是，可以提前返回。
                     if(AbilityTag.MatchesTagExact(GetAbilityTagFromSpec(*SpecWithSlot)))
                     {
                         ClientEquipAbility(AbilityTag, GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
@@ -361,7 +361,7 @@ void UDuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
                 }
             }
 
-            if(!AbilityHasAnySlot(*AbilitySpec)) // Ability doesn't yet have a slot(it's not avtive)
+            if(!AbilityHasAnySlot(*AbilitySpec)) // 该能力尚未拥有槽位（未处于激活状态）
             {
                 if(IsPassiveAbility(*AbilitySpec))
                 {

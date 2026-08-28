@@ -45,7 +45,7 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
     {
         bReached = true;
 
-        //Save World State
+        //保存世界状态
         if(ADuraGameModeBase* DuraGM = Cast<ADuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
         {
             const UWorld* World = GetWorld();
@@ -55,7 +55,7 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
             DuraGM->SaveWorldState(GetWorld(), MapName);
         }
 
-        //Save Player State
+        //保存玩家状态
         IPlayerInterface::Execute_SaveProgress(OtherActor, PlayerStartTag);
 
 

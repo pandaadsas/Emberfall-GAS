@@ -36,7 +36,7 @@ public:
     void InitSlotStatus();
 
 
-    //Setter and Getter
+    //设置器与获取器
     void SetLoadSlotName(FString InLoadSlotName);
     FString GetLoadSlotName() const { return LoadSlotName; }
 
@@ -69,7 +69,7 @@ public:
 
     void SetSelectSlotButtonEnable(bool InSelectSlotButtonEnable);
     bool GetSelectSlotButtonEnable() const { return SelectSlotButtonEnable; }
-    //End Setter and Getter
+    //设置器与获取器区块结束
 private:
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess="true"))

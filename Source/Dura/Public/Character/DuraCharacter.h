@@ -21,7 +21,7 @@ class DURA_API ADuraCharacter : public ADuraCharacterBase, public IPlayerInterfa
 public:
 	ADuraCharacter();
 
-    // Player Interface
+    // 玩家接口
     virtual void AddToXP_Implementation(int32 InXP) override;
     virtual void LevelUp_Implementation() override;
     virtual int32 GetXP_Implementation() const override;
@@ -40,9 +40,9 @@ public:
     virtual void HideMagicCircle_Implementation() override;
 
     virtual void SaveProgress_Implementation(const FName& CheckPointTag) override;
-    // EndPlayer Interface
+    // 玩家接口结束
 
-    //Combat Interface 
+    //战斗接口 
 
     virtual int32 GetPlayerLevel_Implementation() const override;
     virtual void Die(const FVector& DeathImpulse) override;
@@ -51,7 +51,7 @@ public:
     float DeathTime = 5.f;
 
     FTimerHandle DeathTimer;
-    //End Combat Interface
+    //战斗接口结束
 
     virtual void OnRep_Stunned() override;
     virtual void OnRep_Burned() override;

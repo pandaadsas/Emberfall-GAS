@@ -44,7 +44,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Damage")
     FScalableFloat Damage;
 
-    //Some Debuff Params
+    //减益相关参数
     UPROPERTY(EditDefaultsOnly, Category = "Damage")
     float DebuffChance = 20.f;
 
@@ -67,7 +67,7 @@ protected:
     float KnockbackChance = 0.f;
 
     
-    //RadialDamage etc..
+    //径向伤害等参数
     UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage")
     bool bIsRadialDamage = false;
 

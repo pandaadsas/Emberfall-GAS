@@ -280,7 +280,7 @@ void ADuraCharacter::LoadProgress()
         }
         else
         {
-            //Load in Abilities from disk
+            //从磁盘加载技能
             if(UDuraAbilitySystemComponent* DuraASC = Cast<UDuraAbilitySystemComponent>(AbilitiesSystemComponent))
             {
                 DuraASC->AddCharacterAbilitiesFromSaveData(SaveData);

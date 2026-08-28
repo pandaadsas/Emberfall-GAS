@@ -13,29 +13,29 @@ FString UDuraFireBlast::GetDescription(int32 Level)
     const float Cooldown = GetCooldown(Level);
 
     return FString::Printf(TEXT(
-            //Title
-            "<Title>FIRE BLAST</>\n\n"
+            //标题
+            "<Title>火焰爆发</>\n\n"
 
-            // Level
-            "<Small>Level: </><Level>%d</>\n"
+            //等级
+            "<Small>等级：</><Level>%d</>\n"
 
-            //ManaCost
-            "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+            //法力消耗
+            "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-             //Cooldown
-            "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+             //冷却时间
+            "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-            //Number of Fire Balls
-            "\n<Default>Launched %d </>"
-            "<Default>fire balls in all directions, each coming back and exploding upon return, causing </>"
+            //火球数量
+            "\n<Default>向四面八方发射 %d </>"
+            "<Default>枚火球，每枚都会返回并在归途中爆炸，造成</>"
 
-            //Damage
+            //伤害
             "<Damage>%d</>"
-            "<Default> radial fire damage with</>"), 
+            "<Default> 点径向火焰伤害</>"),
 
-            //Values
-            Level, 
-            ManaCost, 
+            //数值
+            Level,
+            ManaCost,
             Cooldown,
             NumFireBalls,
             DamageValue);
@@ -48,29 +48,29 @@ FString UDuraFireBlast::GetNextLevelDescription(int32 Level)
     const float Cooldown = GetCooldown(Level);
 
     return FString::Printf(TEXT(
-            //Title
-            "<Title>NEXT LEVEL: </>\n\n"
+            //标题
+            "<Title>下一级：</>\n\n"
 
-            // Level
-            "<Small>Level: </><Level>%d</>\n"
+            //等级
+            "<Small>等级：</><Level>%d</>\n"
 
-            //ManaCost
-            "<Small>ManaCost: </><ManaCost>%.1f</>\n"
+            //法力消耗
+            "<Small>魔法消耗：</><ManaCost>%.1f</>\n"
 
-             //Cooldown
-            "<Small>Cooldown: </><Cooldown>%.1f</>\n"
+             //冷却时间
+            "<Small>冷却时间：</><Cooldown>%.1f</>\n"
 
-            //Number of Fire Balls
-            "\n<Default>Launched %d </>"
-            "<Default>fire balls in all directions, each coming back and exploding upon return, causing </>"
+            //火球数量
+            "\n<Default>向四面八方发射 %d </>"
+            "<Default>枚火球，每枚都会返回并在归途中爆炸，造成</>"
 
-            //Damage
+            //伤害
             "<Damage>%d</>"
-            "<Default> radial fire damage with</>"), 
+            "<Default> 点径向火焰伤害</>"),
 
-            //Values
-            Level, 
-            ManaCost, 
+            //数值
+            Level,
+            ManaCost,
             Cooldown,
             NumFireBalls,
             DamageValue);

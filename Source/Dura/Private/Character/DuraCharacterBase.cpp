@@ -14,7 +14,7 @@
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystem/Passive/PassiveNiagaraComponent.h"
 
-// Sets default values
+// 设置默认值
 ADuraCharacterBase::ADuraCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -87,7 +87,7 @@ UAnimMontage* ADuraCharacterBase::GetHitReactMontage_Implementation()
 
 void ADuraCharacterBase::Die(const FVector& DeathImpulse)
 {
-	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true)); //auto replicated
+	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true)); //自动网络复制
 	MulticastHandleDeath(DeathImpulse);
 }
 
@@ -198,7 +198,7 @@ USkeletalMeshComponent* ADuraCharacterBase::GetWeapon_Implementation()
     return Weapon;
 }
 
-// Called when the game starts or when spawned
+// 当游戏开始或生成时调用
 void ADuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -250,8 +250,8 @@ void ADuraCharacterBase::InitializeDefaultAttributes() const
 {
 	ApplyAttributeInitEffectToSelf(PrimaryInitEffectClass, 1.0f);
 	ApplyAttributeInitEffectToSelf(SecondaryInitEffectClass, 1.0f);
-	//must put after SecondaryInit
-	//caust it depend on Secondary Attribute of MaxHealth and MaxMana
+	//必须放在 SecondaryInit 之后
+	//因为它依赖于次要属性 MaxHealth 和 MaxMana
 	ApplyAttributeInitEffectToSelf(VitalInitEffectClass, 1.0f); 
 }
 

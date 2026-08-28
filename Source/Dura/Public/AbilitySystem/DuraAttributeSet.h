@@ -48,7 +48,7 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 };
 
-// typedef is specific to the FGameplayAttribute() signature, but TStaticFunPtr is generic to any signature chosen
+// typedef 特指 FGameplayAttribute() 签名，而 TStaticFunPtr 对所选的任意签名都是通用的
 //typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
 template<class T>
 using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
@@ -70,7 +70,7 @@ public:
 
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
-	/* Primary Attributes */
+	/* 主属性 */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")
 	FGameplayAttributeData Strength;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, Strength);
@@ -87,9 +87,9 @@ public:
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, Vigor);
 
-	/* End Primary Attributes*/
+	/* 主属性结束 */
 
-	/* Secondary Attributes */
+	/* 次要属性 */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Secondary Attributes")
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, Armor);
@@ -130,9 +130,9 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, MaxMana);
 
-	/* End Secondary Attributes*/
+	/* 次要属性结束 */
 
-	/* Resistance Attributes */
+	/* 抗性属性 */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_FireResistance, Category = "Resistance Attributes")
 	FGameplayAttributeData FireResistance;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, FireResistance);
@@ -149,9 +149,9 @@ public:
 	FGameplayAttributeData PhysicalResistance;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, PhysicalResistance);
 
-	/* End Resistance Attributes*/
+	/* 抗性属性结束 */
 
-	/* Vital Attributes */
+	/* 生命法力属性 */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Health, Category="Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, Health);
@@ -160,10 +160,10 @@ public:
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, Mana);
 
-	/* End Vital Attributes */
+	/* 生命法力属性结束 */
 
 
-	/* Meta Attributes */
+	/* 元属性 */
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, IncomingDamage);
@@ -172,7 +172,7 @@ public:
 	FGameplayAttributeData IncomingXP;
 	ATTRIBUTE_ACCESSORS(UDuraAttributeSet, IncomingXP);
 
-	/* End Meta Attributes */
+	/* 元属性结束 */
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
@@ -216,7 +216,7 @@ public:
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
 
-	/* Resistance */
+	/* 抗性 */
 	UFUNCTION()
 	void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
 	UFUNCTION()

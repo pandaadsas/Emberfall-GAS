@@ -40,7 +40,7 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 
-	//** ICombatInterface
+	//** 战斗接口（ICombatInterface）
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) const override;
@@ -75,7 +75,7 @@ public:
 
     virtual bool IsBeingShocked_Implementation() override;
     virtual void SetIsBeingShocked_Implementation(bool InIsBeingShocked) override;
-	//** End ICombatInterface
+	//** 战斗接口结束（ICombatInterface）
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
@@ -148,7 +148,7 @@ protected:
 
 	void AddCharacterAbilities();
 
-	/* Dissolve Effects */
+	/* 消融效果 */
 	void Dissolve();
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -174,7 +174,7 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
     USoundBase* DeathSound;
 
-    /* Minions */
+    /* 爪牙 */
     
     int32 MinionCount = 0;
 

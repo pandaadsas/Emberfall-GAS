@@ -131,7 +131,7 @@ bool FDuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 	{
 		bHasWorldOrigin = false;
 	}
-	//custom add 
+	// 自定义新增部分
 	if (RepBits & (1 << 7))
 	{
         Ar << bIsBlockedHit;
@@ -196,7 +196,7 @@ bool FDuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 
 	if (Ar.IsLoading())
 	{
-		AddInstigator(Instigator.Get(), EffectCauser.Get()); // Just to initialize InstigatorAbilitySystemComponent
+		AddInstigator(Instigator.Get(), EffectCauser.Get()); // 只是为了初始化 InstigatorAbilitySystemComponent
 	}
 
 	bOutSuccess = true;

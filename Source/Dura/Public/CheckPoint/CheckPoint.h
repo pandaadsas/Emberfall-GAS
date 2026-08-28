@@ -21,11 +21,11 @@ class DURA_API ACheckPoint : public APlayerStart, public ISaveInterface, public 
 public:
     ACheckPoint(const FObjectInitializer& ObjectInitializer);
 
-    /* Save Interface */
+    /* 存档接口 */
     virtual bool ShouldLoadTransform_Implementation() override { return false; }
 
     virtual void LoadActor_Implementation() override;
-    /* End Save Interface */
+    /* 存档接口结束 */
 
     UPROPERTY(BlueprintReadWrite, SaveGame)
     bool bReached = false;
@@ -38,13 +38,13 @@ protected:
 
     virtual void BeginPlay() override;
 
-    /* Highlight Interface */
+    /* 高亮接口 */
 
     virtual void HighlightActor_Implementation() override;
     virtual void UnHighlightActor_Implementation() override;
     virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;
 
-    /* End Hightlight Interface */
+    /* 高亮接口结束 */
 
     UFUNCTION(BlueprintImplementableEvent)
     void CheckpointReached(UMaterialInstanceDynamic* MaterialInstanceDynamic);

@@ -128,7 +128,7 @@ void UDuraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(const UO
         CharacterClassInfo->PrimaryAttributesSetByCaller, 1.f, EffectContextHandle
     );
 
-    //Set By Caller 
+    //Set By Caller 赋值
     UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Primary_Strength, SaveGame->Strength);
     UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Primary_Intelligence, SaveGame->Intelligence);
     UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Primary_Resilience, SaveGame->Resilience);
@@ -455,7 +455,7 @@ FGameplayEffectContextHandle UDuraAbilitySystemLibrary::ApplyDamageEffect(const 
     SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
     SetKnockbackForce(EffectContextHandle, DamageEffectParams.KnockbackForce);
 
-    //Set Radial Damage Param.
+    //设置径向伤害参数。
     SetIsRadialDamage(EffectContextHandle, DamageEffectParams.bIsRadialDamage);
     SetRadialDamageOrigin(EffectContextHandle, DamageEffectParams.RadialDamageOrigin);
     SetRadialDamageInnerRadius(EffectContextHandle, DamageEffectParams.RadialDamageInnerRadius);
@@ -470,7 +470,7 @@ FGameplayEffectContextHandle UDuraAbilitySystemLibrary::ApplyDamageEffect(const 
 
     const FDuraGameplayTags& GameplayTags = FDuraGameplayTags::Get();
 
-    //Set By Caller 
+    //Set By Caller 赋值
     UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, 
     DamageEffectParams.DamageType, DamageEffectParams.BaseDamage);
 
