@@ -27,6 +27,7 @@ bool UDuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldC
 		if (ADuraHUD* DuraHUD = Cast<ADuraHUD>(PC->GetHUD()))
 		{
 			ADuraPlayerState* PS = PC->GetPlayerState<ADuraPlayerState>();
+			if (!PS) return false;
 			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 			UAttributeSet* AS = PS->GetAttributeSet();
 
@@ -277,7 +278,7 @@ float UDuraAbilitySystemLibrary::GetDebuffDamage(const FGameplayEffectContextHan
 	{
 		return DuraEffectContext->GetDebuffDamage();
 	}
-	return false;    
+	return 0.f;
 }
 
 float UDuraAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextHandle& EffectContextHandle)
@@ -286,7 +287,7 @@ float UDuraAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextH
 	{
 		return DuraEffectContext->GetDebuffDuration();
 	}
-	return false;   
+	return 0.f;
 }
 
 float UDuraAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle)
@@ -295,7 +296,7 @@ float UDuraAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContext
 	{
 		return DuraEffectContext->GetDebuffFrequency();
 	}
-	return false;    
+	return 0.f;
 }
 
 FGameplayTag UDuraAbilitySystemLibrary::GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle)
@@ -316,7 +317,7 @@ FVector UDuraAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextH
 	return FVector::ZeroVector;  
 }
 
-FVector UDuraAbilitySystemLibrary::GetKocnbackForce(const FGameplayEffectContextHandle& EffectContextHandle)
+FVector UDuraAbilitySystemLibrary::GetKnockbackForce(const FGameplayEffectContextHandle& EffectContextHandle)
 {
     if (const FDuraGameplayEffectContext* DuraEffectContext = static_cast<const FDuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
@@ -340,7 +341,7 @@ float UDuraAbilitySystemLibrary::GetRadialDamageInnerRadius(const FGameplayEffec
 	{
 		return DuraEffectContext->GetRadialDamageInnerRadius();
 	}
-	return false;
+	return 0.f;
 }
 
 float UDuraAbilitySystemLibrary::GetRadialDamageOuterRadius(const FGameplayEffectContextHandle& EffectContextHandle)
@@ -349,7 +350,7 @@ float UDuraAbilitySystemLibrary::GetRadialDamageOuterRadius(const FGameplayEffec
 	{
 		return DuraEffectContext->GetRadialDamageOuterRadius();
 	}
-	return false;
+	return 0.f;
 }
 
 FVector UDuraAbilitySystemLibrary::GetRadialDamageOrigin(const FGameplayEffectContextHandle& EffectContextHandle)
@@ -391,7 +392,7 @@ void UDuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldC
 	}
 }
 
-void UDuraAbilitySystemLibrary::GetClosetTargets(int32 MaxTargets, const TArray<AActor*>& Actors, const FVector& Origin, TArray<AActor*>& OutClosestTargets)
+void UDuraAbilitySystemLibrary::GetClosestTargets(int32 MaxTargets, const TArray<AActor*>& Actors, const FVector& Origin, TArray<AActor*>& OutClosestTargets)
 {
     if(Actors.Num() <= MaxTargets)
     {

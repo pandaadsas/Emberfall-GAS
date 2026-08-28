@@ -125,11 +125,10 @@ void ADuraCharacter::Die(const FVector& DeathImpulse)
 {
     Super::Die(DeathImpulse);
 
-    FTimerDelegate DeathTimerDelegate;
-    DeathTimerDelegate.BindLambda([this]()
+    // 使用 WeakLambda：即使角色在死亡延迟期间被销毁，回调也不会访问失效的 this
+    FTimerDelegate DeathTimerDelegate = FTimerDelegate::CreateWeakLambda(this, [this]()
     {
-        ADuraGameModeBase* DuraGM = Cast<ADuraGameModeBase>(UGameplayStatics::GetGameMode(this));
-        if(DuraGM)
+        if(ADuraGameModeBase* DuraGM = Cast<ADuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
         {
             DuraGM->PlayerDied(this);
         }

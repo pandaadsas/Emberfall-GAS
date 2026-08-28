@@ -52,7 +52,7 @@ void UDuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
-    if(Props.TargetCharacter->Implements<UCombatInterface>() && ICombatInterface::Execute_IsDead(Props.TargetCharacter))
+    if(IsValid(Props.TargetAvatarActor) && Props.TargetAvatarActor->Implements<UCombatInterface>() && ICombatInterface::Execute_IsDead(Props.TargetAvatarActor))
     {
         return;
     }
@@ -221,7 +221,7 @@ void UDuraAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResili
 
 void UDuraAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDuraAttributeSet, Resilience, OldVigor);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDuraAttributeSet, Vigor, OldVigor);
 }
 
 void UDuraAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
@@ -306,15 +306,15 @@ void UDuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		}
 		else
 		{
-            if(Props.TargetCharacter->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsBeingShocked(Props.TargetCharacter))
+            if(IsValid(Props.TargetCharacter) && Props.TargetASC && Props.TargetCharacter->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsBeingShocked(Props.TargetCharacter))
             {
                 FGameplayTagContainer TagContainer;
 			    TagContainer.AddTag(FDuraGameplayTags::Get().Effect_HitReact);
 			    Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
             }
 
-            const FVector& KnockbackForce = UDuraAbilitySystemLibrary::GetKocnbackForce(Props.EffectContextHandle); 
-            if(!KnockbackForce.IsNearlyZero(1.f))
+            const FVector& KnockbackForce = UDuraAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle); 
+            if(IsValid(Props.TargetCharacter) && !KnockbackForce.IsNearlyZero(1.f))
             {
                 Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
             }
@@ -340,7 +340,7 @@ void UDuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
         
     //TODO: See if we should level up
     // Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to ImcomingXP
-    if(Props.SourceCharacter->Implements<UCombatInterface>() && Props.SourceCharacter->Implements<UPlayerInterface>())
+    if(IsValid(Props.SourceCharacter) && Props.SourceCharacter->Implements<UCombatInterface>() && Props.SourceCharacter->Implements<UPlayerInterface>())
     {
         const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
         const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
@@ -407,7 +407,11 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
     TargetTagComponent.SetAndApplyTargetTagChanges(InheritedTagContainer);
     //End Add Target Tag Component
 
+    // 引擎 5.7 起将 StackingType 标记为转私有，但运行时 setter 未导出（SetStackingType 仅限编辑器构建），
+    // 因此这里保留直接赋值并压制弃用警告；升级引擎若提供导出的 setter 再替换。
+    PRAGMA_DISABLE_DEPRECATION_WARNINGS
     Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
+    PRAGMA_ENABLE_DEPRECATION_WARNINGS
     Effect->StackLimitCount = 1;
 
     int32 Index = Effect->Modifiers.Num();
@@ -420,15 +424,14 @@ void UDuraAttributeSet::Debuff(const FEffectProperties& Props)
     FGameplayEffectContextHandle EffectContext = Props.SourceASC->MakeEffectContext();
     EffectContext.AddSourceObject(Props.SourceASC);
 
-    FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f);
-    if(MutableSpec)
+    FGameplayEffectSpec MutableSpec(Effect, EffectContext, 1.f);
+    if(FDuraGameplayEffectContext* DuraContext = static_cast<FDuraGameplayEffectContext*>(MutableSpec.GetContext().Get()))
     {
-        FDuraGameplayEffectContext* DuraContext = static_cast<FDuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
-        TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable<FGameplayTag>(new FGameplayTag(DamageType));     
+        TSharedPtr<FGameplayTag> DebuffDamageType = MakeShared<FGameplayTag>(DamageType);
         DuraContext->SetDamageType(DebuffDamageType);
+    }
 
-        Props.TargetASC->ApplyGameplayEffectSpecToSelf(*MutableSpec);
-    } 
+    Props.TargetASC->ApplyGameplayEffectSpecToSelf(MutableSpec);
 }
 
 void UDuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const

@@ -41,21 +41,21 @@ void ADuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, 
 
 void ADuraPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
-    if(!IsValid(MagicCiecle))
+    if(!IsValid(MagicCircle))
     {
-        MagicCiecle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+        MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
         if(DecalMaterial)
         {
-            MagicCiecle->SetMaterial(0, DecalMaterial);
+            MagicCircle->SetMaterial(0, DecalMaterial);
         }
     }
 }
 
 void ADuraPlayerController::HideMagicCircle()
 {
-    if(IsValid(MagicCiecle))
+    if(IsValid(MagicCircle))
     {
-        MagicCiecle->Destroy();
+        MagicCircle->Destroy();
     }
 }
 
@@ -154,7 +154,14 @@ void ADuraPlayerController::MouseTrace()
 {
 	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
-	if (!CursorHit.bBlockingHit) return;
+	if (!CursorHit.bBlockingHit)
+	{
+		// 光标移出可命中物体：清除上一帧高亮，避免高亮状态滞留
+		UnHighlightActor(lastActor);
+		lastActor = nullptr;
+		thisActor = nullptr;
+		return;
+	}
 	hitResult = CursorHit;
 	thisActor = CursorHit.GetActor();
 	
@@ -211,8 +218,7 @@ void ADuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 			if (IsValid(thisActor) && thisActor->Implements<UEnemyInterface>())
 			{
-				TargetingStatus = (IsValid(thisActor) && thisActor->Implements<UEnemyInterface>()) ? 
-					ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNotEnemy;
+				TargetingStatus = ETargetingStatus::TargetingEnemy;
 				bAutoRunning = false;
 			}
 		}
@@ -330,8 +336,8 @@ void ADuraPlayerController::AutoRun()
 
 void ADuraPlayerController::UpdateMagicCircleLocation()
 {
-    if(IsValid(MagicCiecle))
+    if(IsValid(MagicCircle))
     {
-        MagicCiecle->SetActorLocation(hitResult.ImpactPoint);
+        MagicCircle->SetActorLocation(hitResult.ImpactPoint);
     }
 }

@@ -15,7 +15,7 @@ ADuraPlayerState::ADuraPlayerState()
 
 	AttributeSet = CreateDefaultSubobject<UDuraAttributeSet>("AttributeSet");
 
-	NetUpdateFrequency = 100.0f;
+	SetNetUpdateFrequency(100.0f);
 }
 
 UAbilitySystemComponent* ADuraPlayerState::GetAbilitySystemComponent() const

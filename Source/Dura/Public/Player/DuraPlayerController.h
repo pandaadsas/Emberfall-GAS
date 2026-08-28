@@ -119,7 +119,7 @@ private:
     TSubclassOf<AMagicCircle> MagicCircleClass;
 
     UPROPERTY()
-    TObjectPtr<AMagicCircle> MagicCiecle;
+    TObjectPtr<AMagicCircle> MagicCircle;
 
     void UpdateMagicCircleLocation();
 };

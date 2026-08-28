@@ -19,7 +19,7 @@ void UDuraPassiveAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 }
 void UDuraPassiveAbility::ReceiveDeactivate(const FGameplayTag& AbilityTag)
 {
-    if(AbilityTags.HasTagExact(AbilityTag))
+    if(GetAssetTags().HasTagExact(AbilityTag))
     {
         EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
     }
