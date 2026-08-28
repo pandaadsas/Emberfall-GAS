@@ -209,7 +209,7 @@ void ADuraCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
     DuraPlayerState->AddToLevel(InPlayerLevel);
 
     UDuraAbilitySystemComponent* DuraASC = CastChecked<UDuraAbilitySystemComponent>(GetAbilitySystemComponent());
-    DuraASC->UpdateAbilityStatues(DuraPlayerState->GetPlayerLevel());
+    DuraASC->UpdateAbilityStatuses(DuraPlayerState->GetPlayerLevel());
 }
 
 void ADuraCharacter::AddToXP_Implementation(int32 InXP)

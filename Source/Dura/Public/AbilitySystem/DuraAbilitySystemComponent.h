@@ -70,7 +70,7 @@ public:
     UFUNCTION(Server, Reliable)
     void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
 
-    void UpdateAbilityStatues(int32 Level);
+    void UpdateAbilityStatuses(int32 Level);
 
     UFUNCTION(Server, Reliable)
     void ServerSpendSpellPoint(const FGameplayTag& AbilityTag);
