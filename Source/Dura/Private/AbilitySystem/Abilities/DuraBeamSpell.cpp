@@ -71,32 +71,34 @@ void UDuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
     }
 }
 
-void UDuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAddditionalTargets)
-{  
+void UDuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
+{
     TArray<AActor*> IgnoreActors;
     IgnoreActors.Add(GetAvatarActorFromActorInfo());
     IgnoreActors.Add(MouseHitActor);
 
     TArray<AActor*> OverlappingActors;
-    UDuraAbilitySystemLibrary::GetLivePlayersWithinRadius(GetAvatarActorFromActorInfo(), 
-        OverlappingActors, 
-        IgnoreActors, 
+    UDuraAbilitySystemLibrary::GetLivePlayersWithinRadius(GetAvatarActorFromActorInfo(),
+        OverlappingActors,
+        IgnoreActors,
         850,
         MouseHitLocation
     );
 
     int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTargets);
     //int32 NumAdditionalTargets = 5;
-    UDuraAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors, 
-        MouseHitActor->GetActorLocation(), OutAddditionalTargets);
+    // 鼠标目标可能已失效（死亡/销毁），退化用鼠标命中点作为扩散中心
+    const FVector TargetOrigin = IsValid(MouseHitActor) ? MouseHitActor->GetActorLocation() : MouseHitLocation;
+    UDuraAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors,
+        TargetOrigin, OutAdditionalTargets);
 
-    for (AActor* Target : OutAddditionalTargets)
+    for (AActor* Target : OutAdditionalTargets)
     {
         if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(Target))
         {
-            if(!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &UDuraBeamSpell::AdditianalTargetDied))
+            if(!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &UDuraBeamSpell::AdditionalTargetDied))
             {
-                CombatInterface->GetOnDeathDelegate().AddDynamic(this, &UDuraBeamSpell::AdditianalTargetDied);
+                CombatInterface->GetOnDeathDelegate().AddDynamic(this, &UDuraBeamSpell::AdditionalTargetDied);
             }
         }
     }

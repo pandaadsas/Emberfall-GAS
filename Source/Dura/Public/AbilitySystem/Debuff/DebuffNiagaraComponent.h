@@ -17,6 +17,7 @@ class DURA_API UDebuffNiagaraComponent : public UNiagaraComponent
 public:
     UDebuffNiagaraComponent();
 
+    UPROPERTY(EditDefaultsOnly, Category = "Debuff")
     FGameplayTag DebuffTag;
 
 protected:

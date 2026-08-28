@@ -60,9 +60,13 @@ TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& Ground
 
     TArray<USceneComponent*> ArrayCopy;
 
+    // 所有探测点共用同一中心，生存者列表只需查询一次；结果同时作为射线检测的忽略列表
+    TArray<AActor*> IgnoreActors;
+    UDuraAbilitySystemLibrary::GetLivePlayersWithinRadius(this, IgnoreActors, TArray<AActor*>(), 1500.f, GetActorLocation());
+
     for (USceneComponent* Pt : ImmutablePts)
     {
-        if(ArrayCopy.Num() >= NumPoints) return ArrayCopy;   
+        if(ArrayCopy.Num() >= NumPoints) return ArrayCopy;
 
         if(Pt != Pt_0)
         {
@@ -73,18 +77,19 @@ TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& Ground
 
         const FVector RaisedLocation = FVector(Pt->GetComponentLocation().X, Pt->GetComponentLocation().Y,Pt->GetComponentLocation().Z + 500.f);
         const FVector LoweredLocation = FVector(Pt->GetComponentLocation().X, Pt->GetComponentLocation().Y,Pt->GetComponentLocation().Z - 500.f);
-    
-        TArray<AActor*> IngoreActors;
-        UDuraAbilitySystemLibrary::GetLivePlayersWithinRadius(this, IngoreActors, TArray<AActor*>(), 1500.f, GetActorLocation());
-      
+
         FCollisionQueryParams QueryParams;
-        QueryParams.AddIgnoredActors(IngoreActors);
+        QueryParams.AddIgnoredActors(IgnoreActors);
         FHitResult HitResult;
         GetWorld()->LineTraceSingleByProfile(HitResult, RaisedLocation, LoweredLocation, FName("BlockAll"), QueryParams);
 
-        const FVector AdjustedLocation = FVector(Pt->GetComponentLocation().X, Pt->GetComponentLocation().Y, HitResult.ImpactPoint.Z);
-        Pt->SetWorldLocation(AdjustedLocation);
-        Pt->SetWorldRotation(UKismetMathLibrary::MakeRotFromZ(HitResult.ImpactNormal));
+        // 未命中任何阻挡面时 ImpactPoint/ImpactNormal 无效（会落到 Z=0 和垃圾法线），保持点位不动
+        if(HitResult.bBlockingHit)
+        {
+            const FVector AdjustedLocation = FVector(Pt->GetComponentLocation().X, Pt->GetComponentLocation().Y, HitResult.ImpactPoint.Z);
+            Pt->SetWorldLocation(AdjustedLocation);
+            Pt->SetWorldRotation(UKismetMathLibrary::MakeRotFromZ(HitResult.ImpactNormal));
+        }
 
         ArrayCopy.Add(Pt);
     }

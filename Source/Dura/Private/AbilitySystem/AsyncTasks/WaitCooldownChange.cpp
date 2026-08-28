@@ -29,9 +29,11 @@ UWaitCooldownChange* UWaitCooldownChange::WaitForCooldownChange(UAbilitySystemCo
 
 void UWaitCooldownChange::EndTask()
 {
-    if(!IsValid(ASC)) return;
-
-    ASC->RegisterGameplayTagEvent(CooldownTag, EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+    if(IsValid(ASC))
+    {
+        ASC->RegisterGameplayTagEvent(CooldownTag, EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+        ASC->OnActiveGameplayEffectAddedDelegateToSelf.RemoveAll(this);
+    }
 
     SetReadyToDestroy();
     MarkAsGarbage();
@@ -60,15 +62,15 @@ void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* InASC, co
         TArray<float> TimeRemaining = InASC->GetActiveEffectsTimeRemaining(GameplayEffectQuery);
         if(TimeRemaining.Num() > 0)
         {
-            float TimeRemainging = TimeRemaining[0];
+            float MaxTimeRemaining = TimeRemaining[0];
             for (int32 i = 1; i < TimeRemaining.Num(); i++)
             {
-                if(TimeRemaining[i] > TimeRemainging)
+                if(TimeRemaining[i] > MaxTimeRemaining)
                 {
-                    TimeRemainging = TimeRemaining[i];
+                    MaxTimeRemaining = TimeRemaining[i];
                 }
             }
-            CooldownStart.Broadcast(TimeRemainging);
+            CooldownStart.Broadcast(MaxTimeRemaining);
         }
     }
 }

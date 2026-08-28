@@ -6,8 +6,11 @@
 
 TArray<FVector> UDuraSummonAbility::GetSpawnLocations()
 {
-    const FVector Forward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
-    const FVector Location = GetAvatarActorFromActorInfo()->GetActorLocation();
+    AActor* Avatar = GetAvatarActorFromActorInfo();
+    if(!Avatar || !GetWorld()) return TArray<FVector>();
+
+    const FVector Forward = Avatar->GetActorForwardVector();
+    const FVector Location = Avatar->GetActorLocation();
     const float DeltaSpread = SpawnSpread / NumMinions;
     
     const FVector LeftOfSpread = Forward.RotateAngleAxis(-SpawnSpread / 2.f, FVector::UpVector);
@@ -35,6 +38,9 @@ TArray<FVector> UDuraSummonAbility::GetSpawnLocations()
 
 TSubclassOf<APawn> UDuraSummonAbility::GetRandomMinionClass()
 {
-    int32 Selection = FMath::RandRange(0, MinionClasses.Num() - 1);
+    // 未配置召唤物类别时避免 RandRange(0, -1) 的未定义行为与越界访问
+    if(MinionClasses.Num() == 0) return nullptr;
+
+    const int32 Selection = FMath::RandRange(0, MinionClasses.Num() - 1);
     return MinionClasses[Selection];
 }

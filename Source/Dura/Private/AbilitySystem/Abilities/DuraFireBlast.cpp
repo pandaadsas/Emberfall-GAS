@@ -78,8 +78,16 @@ FString UDuraFireBlast::GetNextLevelDescription(int32 Level)
 
 TArray<ADuraFireBall*> UDuraFireBlast::SpawnFireBalls()
 {
-    const FVector Forward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
-    const FVector Location = GetAvatarActorFromActorInfo()->GetActorLocation();
+    AActor* Avatar = GetAvatarActorFromActorInfo();
+    if(!Avatar || !GetWorld()) return TArray<ADuraFireBall*>();
+
+    // 非玩家施放时 PlayerController 可能为空，退化为用 Avatar 自身作为 Instigator
+    APawn* InstigatorPawn = (CurrentActorInfo && CurrentActorInfo->PlayerController.IsValid())
+        ? CurrentActorInfo->PlayerController->GetPawn()
+        : nullptr;
+
+    const FVector Forward = Avatar->GetActorForwardVector();
+    const FVector Location = Avatar->GetActorLocation();
     TArray<FRotator> Rotators = UDuraAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, 360.f, NumFireBalls);
 
     TArray<ADuraFireBall*> FireBalls;
@@ -88,23 +96,22 @@ TArray<ADuraFireBall*> UDuraFireBlast::SpawnFireBalls()
         FTransform SpawnTransform;
         SpawnTransform.SetLocation(Location);
         SpawnTransform.SetRotation(Rotator.Quaternion());
-        
+
         ADuraFireBall* FireBall = GetWorld()->SpawnActorDeferred<ADuraFireBall>(
-            FireBallClass, 
-            SpawnTransform, 
-            GetAvatarActorFromActorInfo(), 
-            CurrentActorInfo->PlayerController->GetPawn(),
+            FireBallClass,
+            SpawnTransform,
+            Avatar,
+            InstigatorPawn,
             ESpawnActorCollisionHandlingMethod::AlwaysSpawn
         );
+        if(!FireBall) continue;
 
-        FireBall->ReturnToActor = GetAvatarActorFromActorInfo();
-        FireBall->DamageEffectParams= MakeDamageEffectParamsFromClassDefaults();
-
+        FireBall->ReturnToActor = Avatar;
+        FireBall->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
         FireBall->ExplosionDamageParams = MakeDamageEffectParamsFromClassDefaults();
 
-
         FireBalls.Add(FireBall);
-        
+
         FireBall->FinishSpawning(SpawnTransform);
     }
 

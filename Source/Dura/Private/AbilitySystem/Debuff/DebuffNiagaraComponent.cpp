@@ -39,10 +39,11 @@ void UDebuffNiagaraComponent::BeginPlay()
 
 void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
-    const bool bOwnerValid = IsValid(GetOwner());
-    const bool bOwnerAlive = GetOwner()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(GetOwner());
+    // 短路求值：Owner 无效时不能继续调用其接口
+    const bool bOwnerValidAndAlive = IsValid(GetOwner()) && GetOwner()->Implements<UCombatInterface>()
+        && !ICombatInterface::Execute_IsDead(GetOwner());
 
-    if(NewCount > 0 && bOwnerValid && bOwnerAlive)
+    if(NewCount > 0 && bOwnerValidAndAlive)
     {
         Activate();
     }

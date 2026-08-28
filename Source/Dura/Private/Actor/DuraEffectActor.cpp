@@ -20,11 +20,11 @@ ADuraEffectActor::ADuraEffectActor()
 }
 
 
-void ADuraEffectActor::Tick(float DelTaTime)
+void ADuraEffectActor::Tick(float DeltaTime)
 {
-    Super::Tick(DelTaTime);
+    Super::Tick(DeltaTime);
 
-    RunningTime += DelTaTime;
+    RunningTime += DeltaTime;
 
     const float SinPeriod = 2 * PI / SinePeriodConstant;
     if(RunningTime > SinPeriod)
@@ -32,7 +32,7 @@ void ADuraEffectActor::Tick(float DelTaTime)
         RunningTime = 0;
     }
 
-    ItemMovement(DelTaTime);
+    ItemMovement(DeltaTime);
 }
 
 void ADuraEffectActor::ItemMovement(float DeltaTime)

@@ -31,7 +31,7 @@ protected:
 	virtual void BeginPlay() override;
 
     UFUNCTION()
-    virtual void OnBoxOverlap(UPrimitiveComponent* OverlamppedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+    virtual void OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
     
     UPROPERTY(EditAnywhere)
     TArray<ADuraEnemySpawnPoint*> SpawnPoints;

@@ -15,13 +15,14 @@ void UDuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 void UDuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride)
 {
-	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	AActor* Avatar = GetAvatarActorFromActorInfo();
+	const bool bIsServer = Avatar && Avatar->HasAuthority();
 	if (!bIsServer) return;
 
-	if (GetAvatarActorFromActorInfo()->Implements<UCombatInterface>())
+	if (Avatar->Implements<UCombatInterface>())
 	{
 		const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
-            GetAvatarActorFromActorInfo(), SocketTag);
+            Avatar, SocketTag);
 		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 		if(bOverridePitch)
         {
@@ -43,6 +44,8 @@ void UDuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		);
 
         Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+
+		if(!Projectile) return;
 
 		Projectile->FinishSpawning(SpawnTransform);
 	}

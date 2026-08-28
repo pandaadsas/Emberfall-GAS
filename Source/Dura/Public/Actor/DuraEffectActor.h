@@ -21,7 +21,7 @@ UENUM(BlueprintType)
 enum class EEffectRemovePolicy : uint8
 {
 	RemoveOnEndOverlap,
-	DoNotRmove
+	DoNotRemove
 };
 
 UCLASS()
@@ -32,7 +32,7 @@ class DURA_API ADuraEffectActor : public AActor
 public:	
 	ADuraEffectActor();
 
-    virtual void Tick(float DelTaTime) override;
+    virtual void Tick(float DeltaTime) override;
 protected:
 	virtual void BeginPlay() override;
 

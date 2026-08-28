@@ -87,7 +87,7 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectSpec& Spec,
             TargetDebuffResistance = FMath::Max<float>(TargetDebuffResistance, 0.f);
 
             const float EffectiveDebuffChance = SourceDebuffChance * (100 - TargetDebuffResistance) / 100.f;
-            const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;
+            const bool bDebuff = FMath::RandRange(1, 100) <= EffectiveDebuffChance;
             if( bDebuff )
             {
                 FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
@@ -135,19 +135,16 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 
     int32 SourcePlayerLevel = 1;
-    if(SourceAvatar->Implements<UCombatInterface>())
+    if(IsValid(SourceAvatar) && SourceAvatar->Implements<UCombatInterface>())
     {
         SourcePlayerLevel = ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
     }
 
     int32 TargetPlayerLevel = 1;
-    if(TargetAvatar->Implements<UCombatInterface>())
+    if(IsValid(TargetAvatar) && TargetAvatar->Implements<UCombatInterface>())
     {
         TargetPlayerLevel = ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
     }
-
-	ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
-	ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
 
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
@@ -195,13 +192,15 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
             if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetAvatar))
             {
-                CombatInterface->GetOnDamageDelegate().AddLambda([&DamageTypeValue](float DamageAmount)
+                // 记录委托句柄，径向伤害结算后立即移除绑定，否则受害者委托会一直持有
+                // 指向本函数栈帧的悬空 lambda（内存破坏 + 多次释放时绑定累积）
+                const FDelegateHandle OnDamageHandle = CombatInterface->GetOnDamageDelegate().AddLambda([&DamageTypeValue](float DamageAmount)
                 {
                     DamageTypeValue = DamageAmount;
                 });
 
                 UGameplayStatics::ApplyRadialDamageWithFalloff(
-                    TargetAvatar, DamageTypeValue, 0.f, 
+                    TargetAvatar, DamageTypeValue, 0.f,
                     UDuraAbilitySystemLibrary::GetRadialDamageOrigin(EffectContextHandle),
                     UDuraAbilitySystemLibrary::GetRadialDamageInnerRadius(EffectContextHandle),
                     UDuraAbilitySystemLibrary::GetRadialDamageOuterRadius(EffectContextHandle),
@@ -211,6 +210,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
                     SourceAvatar,
                     nullptr
                 );
+
+                CombatInterface->GetOnDamageDelegate().Remove(OnDamageHandle);
             }
 
         }
@@ -223,7 +224,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().Block_ChanceDef, EvaluationParameters, TargetBlockChance);
 	TargetBlockChance = FMath::Max<float>(0.0f, TargetBlockChance);
 
-	const bool bBlocked = FMath::RandRange(1, 100) < TargetBlockChance;
+	const bool bBlocked = FMath::RandRange(1, 100) <= TargetBlockChance;
 	
 	UDuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
 
@@ -239,7 +240,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	SourceArmorPenetration = FMath::Max<float>(0.0f, SourceArmorPenetration);
 	
 	UCharacterClassInfo* CharacterClassInfo = UDuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
-	
+	if (CharacterClassInfo && CharacterClassInfo->DamageCalculationCoefficients)
+	{
 	// ArmorPenetration ignores a percentage of the Target's Armor
 	const FRealCurve* ArmorPenetrationCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"), FString());
 	const float ArmorPenetrationCoeff = ArmorPenetrationCurve->Eval(SourcePlayerLevel);
@@ -249,6 +251,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
 	const float EffectiveArmorCoeff = EffectiveArmorCurve->Eval(TargetPlayerLevel);
 	Damage *= (100 - EffectiveArmor * EffectiveArmorCoeff) / 100.f;
+	}
 	
 
 	float SourceCritHitChance = 0.0f;
@@ -263,12 +266,15 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef, EvaluationParameters, SourceCritHitDamage);
 	SourceCritHitDamage = FMath::Max<float>(0.0f, SourceCritHitDamage);
 
-	// Critical Hit Resistence reduce Critical hit chance
-	const FRealCurve* CritHitResistenceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CriticalHitResistance"), FString());
-	const float CritHitResistenceCoeff = CritHitResistenceCurve->Eval(TargetPlayerLevel);
-
-	const float EffectiveCriticalHitChance = SourceCritHitChance - TargetCritHitResistence * CritHitResistenceCoeff;
-	const bool bCriticalHit = FMath::RandRange(1, 100) < EffectiveCriticalHitChance;
+	// Critical Hit Resistance reduces Critical hit chance；曲线表未配置时不做抵抗修正
+	float EffectiveCriticalHitChance = SourceCritHitChance;
+	if (CharacterClassInfo && CharacterClassInfo->DamageCalculationCoefficients)
+	{
+		const FRealCurve* CritHitResistanceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CriticalHitResistance"), FString());
+		const float CritHitResistanceCoeff = CritHitResistanceCurve->Eval(TargetPlayerLevel);
+		EffectiveCriticalHitChance = SourceCritHitChance - TargetCritHitResistence * CritHitResistanceCoeff;
+	}
+	const bool bCriticalHit = FMath::RandRange(1, 100) <= EffectiveCriticalHitChance;
 
 	UDuraAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bCriticalHit);
 
