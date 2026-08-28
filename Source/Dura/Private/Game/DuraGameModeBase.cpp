@@ -11,7 +11,6 @@
 #include "Interaction/SaveInterface.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "Dura/DuraLogChannels.h"
-#include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 
 void ADuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -173,8 +172,15 @@ void ADuraGameModeBase::LoadWorldState(UWorld* World)
 
 void ADuraGameModeBase::TravelToMap(UMVVM_LoadSlot* LoadSlot)
 {
-    TSoftObjectPtr<UWorld> WorldSoftPtr = Maps.FindChecked(LoadSlot->GetMapName());
-    UGameplayStatics::OpenLevelBySoftObjectPtr(LoadSlot, WorldSoftPtr);
+    // 槽位地图名未在 Maps 中注册时告警并放弃跳转，避免 FindChecked 断言崩溃
+    if(!LoadSlot) return;
+    if(const TSoftObjectPtr<UWorld>* WorldPtr = Maps.Find(LoadSlot->GetMapName()))
+    {
+        UGameplayStatics::OpenLevelBySoftObjectPtr(LoadSlot, *WorldPtr);
+        return;
+    }
+
+    UE_LOG(LogDura, Warning, TEXT("TravelToMap: 地图 [%s] 未在 GameMode 的 Maps 中注册"), *LoadSlot->GetMapName());
 }
 
 FString ADuraGameModeBase::GetMapNameFromMapAssetName(const FString& MapAssetName) const

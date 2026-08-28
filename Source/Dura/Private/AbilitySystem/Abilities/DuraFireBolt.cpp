@@ -109,16 +109,17 @@ FString UDuraFireBolt::GetNextLevelDescription(int32 Level)
             DamageValue);
 }
 
-void UDuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, 
+void UDuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag,
     bool bOverridePitch, float PitchOverride, AActor* HomingTarget)
 {
-    const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+    AActor* Avatar = GetAvatarActorFromActorInfo();
+    const bool bIsServer = Avatar && Avatar->HasAuthority();
 	if (!bIsServer) return;
 
-	if (!GetAvatarActorFromActorInfo()->Implements<UCombatInterface>()) return;
+	if (!Avatar->Implements<UCombatInterface>()) return;
 
     const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
-            GetAvatarActorFromActorInfo(), SocketTag);
+            Avatar, SocketTag);
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 	if(bOverridePitch) Rotation.Pitch = PitchOverride;
 
@@ -142,6 +143,7 @@ void UDuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 			Cast<APawn>(Owner),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn
 		);
+		if(!Projectile) continue;
 
         Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
 

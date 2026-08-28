@@ -24,9 +24,6 @@ protected:
     float ProjectileSpread = 90.f;
 
     UPROPERTY(EditDefaultsOnly, Category = "FireBolt")
-    int32 MaxNumProjectiles = 5;
-
-    UPROPERTY(EditDefaultsOnly, Category = "FireBolt")
     float HomingAccelerationMin = 1600;
 
     UPROPERTY(EditDefaultsOnly, Category = "FireBolt")

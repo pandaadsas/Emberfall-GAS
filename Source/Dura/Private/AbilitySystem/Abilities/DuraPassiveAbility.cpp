@@ -13,6 +13,8 @@ void UDuraPassiveAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
     if(UDuraAbilitySystemComponent* ASC = Cast<UDuraAbilitySystemComponent>(
         UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo())))
     {
+        // InstancedPerActor 实例可能被重复激活，先解绑避免委托堆积
+        ASC->DeactivatePassiveAbility.RemoveAll(this);
         ASC->DeactivatePassiveAbility.AddUObject(this, &UDuraPassiveAbility::ReceiveDeactivate);
     }
     

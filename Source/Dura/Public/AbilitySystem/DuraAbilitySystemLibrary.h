@@ -130,10 +130,10 @@ public:
 	static void SetDamageType(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, FGameplayTag InDamageType);
 
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayEffects")
-    static void SetDeathImpulse(FGameplayEffectContextHandle& EffectContextHandle, FVector InDeathImpulse);
+    static void SetDeathImpulse(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, FVector InDeathImpulse);
 
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayEffects")
-    static void SetKnockbackForce(FGameplayEffectContextHandle& EffectContextHandle, FVector InKnockbackForce);
+    static void SetKnockbackForce(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, FVector InKnockbackForce);
 
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsRadialDamage(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInsRadialDamage);
@@ -145,7 +145,7 @@ public:
 	static void SetRadialDamageOuterRadius(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, float bInRadialDamageOuterRadius);
 
     UFUNCTION(BlueprintCallable, Category = "DuraAbilitySystemLibrary|GameplayEffects")
-    static void SetRadialDamageOrigin(FGameplayEffectContextHandle& EffectContextHandle, FVector InRadialDamageOrigin);
+    static void SetRadialDamageOrigin(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, FVector InRadialDamageOrigin);
 
     /* Gameplay Mechanics */
 

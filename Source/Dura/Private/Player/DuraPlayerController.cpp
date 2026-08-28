@@ -153,6 +153,16 @@ void ADuraPlayerController::Move(const FInputActionValue& InputValue)
 
 void ADuraPlayerController::MouseTrace()
 {
+	// 眩晕等状态通过 Player_Block_CursorTrace 屏蔽鼠标寻迹；同时清空过期缓存
+	if(GetASC() && GetASC()->HasMatchingGameplayTag(FDuraGameplayTags::Get().Player_Block_CursorTrace))
+	{
+		UnHighlightActor(lastActor);
+		lastActor = nullptr;
+		thisActor = nullptr;
+		hitResult = FHitResult();
+		return;
+	}
+
 	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit)
@@ -200,6 +210,10 @@ void ADuraPlayerController::UnHighlightActor(AActor* InActor)
 
 void ADuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	// 与 Released/Held 保持一致：眩晕等状态会屏蔽输入转发
+	if(GetASC() && GetASC()->HasMatchingGameplayTag(FDuraGameplayTags::Get().Player_Block_InputPressed))
+		return;
+
 	if (!InputTag.MatchesTagExact(FDuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);

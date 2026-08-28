@@ -8,13 +8,17 @@
 
 void UDuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
+	UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if(!SourceASC || !TargetASC) return;
+
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);
+	if(!DamageSpecHandle.IsValid()) return;
 
     const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, DamageType, ScaledDamage);
 
-	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(),
-		UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+	SourceASC->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), TargetASC);
 }
 
 FDamageEffectParams UDuraDamageGameplayAbility::MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor, 
@@ -42,7 +46,7 @@ FDamageEffectParams UDuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
     Params.KnockbackMagnitude = KnockbackMagnitude;
     Params.KnockbackChance = KnockbackChance;
 
-    if(IsValid(TargetActor))
+    if(IsValid(TargetActor) && GetAvatarActorFromActorInfo())
     {
         FRotator Rotation = (TargetActor->GetActorLocation() - GetAvatarActorFromActorInfo()->GetActorLocation()).Rotation();
         if(bOverridePitch)
