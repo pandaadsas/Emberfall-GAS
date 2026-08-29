@@ -1,7 +1,10 @@
-asset: /Game/Blueprints/UI/Button/WBP_WideButton.WBP_WideButton
-CDO props containing 'text':
-  get_accessible_summary_text (read err Exception("DuraUserWidget: Failed to find property 'get_acce)
-  get_accessible_text (read err Exception("DuraUserWidget: Failed to find property 'get_acce)
-  set_tool_tip_text (read err Exception("DuraUserWidget: Failed to find property 'set_tool)
-  tool_tip_text = [] (Text)
-[DUMP-DONE]
+array ability_information len=8
+  [0] {'level_requirement': 1}
+  [1] {'level_requirement': 2}
+  [2] {'level_requirement': 2}
+  [3] {'level_requirement': 2}
+  [4] {'level_requirement': 2}
+  [5] {'level_requirement': 2}
+  [6] {'level_requirement': 2}
+  [7] {'level_requirement': 1}
+[DONE]
