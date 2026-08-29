@@ -1,83 +1,22 @@
-==== /Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadScreen
-  WBP_WideButton_C | Button_Play | [PLAY]
-  WBP_WideButton_C | Button_Delete | [DELETE]
-  WBP_WideButton_C | Button_Quit | [QUIT]
-  WBP_WideButton_C | Button_Play | [PLAY]
-  WBP_WideButton_C | Button_Delete | [DELETE]
-  WBP_WideButton_C | Button_Quit | [QUIT]
-  WBP_LoadScreen_C | Default__WBP_LoadScreen_C | []
-  WBP_LoadSlot_WidgetSwicher_C | Switcher_2 | []
-  WBP_LoadSlot_WidgetSwicher_C | Switcher_1 | []
-  WBP_LoadSlot_WidgetSwicher_C | Switcher_0 | []
-  WBP_LoadSlot_WidgetSwicher_C | Switcher_1 | []
-  WBP_LoadSlot_WidgetSwicher_C | Switcher_2 | []
-  WBP_LoadSlot_WidgetSwicher_C | Switcher_0 | []
-==== /Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadScreenWidget_Base
-  WBP_LoadScreenWidget_Base_C | Default__WBP_LoadScreenWidget_Base_C | []
-==== /Game/Blueprints/UI/MainMenu/WBP_MainMenu
-  WBP_WideButton_C | Button_Play | [Play]
-  WBP_WideButton_C | Button_Quit | [Quit]
-  WBP_WideButton_C | Button_Play | [Play]
-  WBP_WideButton_C | Button_Quit | [Quit]
-  WBP_MainMenu_C | Default__WBP_MainMenu_C | []
-==== /Game/Blueprints/UI/Button/WBP_Button
-  Button | Button | []
-  TextBlock | Text_Title | [X]
-  Button | Button | []
-  TextBlock | Text_Title | [X]
-  WBP_Button_C | Default__WBP_Button_C | [X]
-==== /Game/Blueprints/UI/Overlay/WBP_Overlay
-  WBP_Button_C | Button_Quit | [X]
-  WBP_HealthManaSpells_C | WBP_HealthManaSpells | []
-  WBP_WideButton_C | AttributeMenuButton | [Attributes]
-  WBP_Picture_Frame_C | WBP_Picture_Frame | []
-  WBP_XPBar_C | WBP_XPBar | []
-  WBP_ValueGlobe_C | ValueGlobe_Level | []
-  WBP_WideButton_C | SpellMenuButton | [SPELLS]
-  WBP_HealthManaSpells_C | WBP_HealthManaSpells | []
-  WBP_XPBar_C | WBP_XPBar | []
-  WBP_Picture_Frame_C | WBP_Picture_Frame | []
-  WBP_ValueGlobe_C | ValueGlobe_Level | []
-  WBP_WideButton_C | AttributeMenuButton | [Attributes]
-  WBP_WideButton_C | SpellMenuButton | [SPELLS]
-  WBP_Button_C | Button_Quit | [X]
-  WBP_Overlay_C | Default__WBP_Overlay_C | []
-==== /Game/Blueprints/UI/Overlay/SubWidget/WBP_HealthManaSpells
-  WBP_HealthGlobe_C | WBP_HealthGlobe | []
-  WBP_ManaGlobe_C | WBP_ManaGlobe | []
-  TextBlock | TextBlock_0 | [攻击技能]
-  TextBlock | Text_LMB | [鼠标左键]
-  TextBlock | Text_1 | [1]
-  TextBlock | Text_2 | [2]
-  TextBlock | Text_3 | [3]
-  TextBlock | Text_LMB_4 | [4]
-  TextBlock | Text_RMB | [鼠标右键]
-  TextBlock | TextBlock | [被动技能]
-  WBP_SpellGlobe_C | SpellGlobe_Passive_1 | []
-  WBP_SpellGlobe_C | SpellGlobe_Passive_2 | []
-  WBP_SpellGlobe_C | SpellGlobe_1 | []
-  WBP_SpellGlobe_C | SpellGlobe_2 | []
-  WBP_SpellGlobe_C | SpellGlobe_3 | []
-  WBP_SpellGlobe_C | SpellGlobe_4 | []
-  WBP_SpellGlobe_C | SpellGlobe_LMB | []
-  WBP_SpellGlobe_C | SpellGlobe_RMB | []
-  WBP_HealthGlobe_C | WBP_HealthGlobe | []
-  TextBlock | TextBlock_0 | [攻击技能]
-  TextBlock | Text_LMB | [鼠标左键]
-  TextBlock | Text_RMB | [鼠标右键]
-  TextBlock | Text_1 | [1]
-  TextBlock | Text_2 | [2]
-  TextBlock | Text_3 | [3]
-  TextBlock | Text_LMB_4 | [4]
-  WBP_SpellGlobe_C | SpellGlobe_LMB | []
-  WBP_SpellGlobe_C | SpellGlobe_RMB | []
-  WBP_SpellGlobe_C | SpellGlobe_1 | []
-  WBP_SpellGlobe_C | SpellGlobe_2 | []
-  WBP_SpellGlobe_C | SpellGlobe_3 | []
-  WBP_SpellGlobe_C | SpellGlobe_4 | []
-  TextBlock | TextBlock | [被动技能]
-  WBP_SpellGlobe_C | SpellGlobe_Passive_1 | []
-  WBP_SpellGlobe_C | SpellGlobe_Passive_2 | []
-  WBP_ManaGlobe_C | WBP_ManaGlobe | []
-  WBP_HealthManaSpells_C | Default__WBP_HealthManaSpells_C | []
+class: AttributeInfo
+prop attribute_information : Array
+  array len=18
+  [0] attribute_description=[Increases physical damage] | attribute_name=[Strength] | attribute_value=0.0
+  [1] attribute_description=[Increases magical damage] | attribute_name=[Intelligence] | attribute_value=0.0
+  [2] attribute_description=[Increases Armor and Armor Penetration] | attribute_name=[Resilience] | attribute_value=0.0
+  [3] attribute_description=[Increases Health] | attribute_name=[Vigor] | attribute_value=0.0
+  [4] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[Armor] | attribute_value=0.0
+  [5] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[Armor_Penetration] | attribute_value=0.0
+  [6] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[Block_Chance] | attribute_value=0.0
+  [7] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[CriticalHitChance] | attribute_value=0.0
+  [8] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[CriticalHitDamage] | attribute_value=0.0
+  [9] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[CriticalHitResistance] | attribute_value=0.0
+  [10] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[HealthRegeneration] | attribute_value=0.0
+  [11] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[ManaRegeneration] | attribute_value=0.0
+  [12] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[MaxHealth] | attribute_value=0.0
+  [13] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[MaxMana] | attribute_value=0.0
+  [14] attribute_description=[Resistance to Fire Damage] | attribute_name=[Fire Resistance] | attribute_value=0.0
+  [15] attribute_description=[Resistance to Lightning Damage] | attribute_name=[Lightning Resistance] | attribute_value=0.0
+  [16] attribute_description=[Resistance to Arcane Damage] | attribute_name=[Arcane Resistance] | attribute_value=0.0
+  [17] attribute_description=[Resistance to Physical Damage] | attribute_name=[Physical Resistance] | attribute_value=0.0
 [DUMP-DONE]
