@@ -1,0 +1,4 @@
+renamed pins: 0
+no gen class for /Game/Blueprints/AbilitySystem/Dura/Abilities/Lightning/GA_Electrocute
+no gen class for /Game/Blueprints/AbilitySystem/Dura/Abilities/Fire/FireBolt/GA_FireBolt
+[FIX-DONE]

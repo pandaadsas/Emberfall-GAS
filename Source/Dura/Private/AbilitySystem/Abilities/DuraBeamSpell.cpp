@@ -71,7 +71,7 @@ void UDuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
     }
 }
 
-void UDuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
+void UDuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAddditionalTargets)
 {
     TArray<AActor*> IgnoreActors;
     IgnoreActors.Add(GetAvatarActorFromActorInfo());
@@ -90,15 +90,15 @@ void UDuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTarget
     // 鼠标目标可能已失效（死亡/销毁），退化用鼠标命中点作为扩散中心
     const FVector TargetOrigin = IsValid(MouseHitActor) ? MouseHitActor->GetActorLocation() : MouseHitLocation;
     UDuraAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors,
-        TargetOrigin, OutAdditionalTargets);
+        TargetOrigin, OutAddditionalTargets);
 
-    for (AActor* Target : OutAdditionalTargets)
+    for (AActor* Target : OutAddditionalTargets)
     {
         if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(Target))
         {
-            if(!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &UDuraBeamSpell::AdditionalTargetDied))
+            if(!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &UDuraBeamSpell::AdditianalTargetDied))
             {
-                CombatInterface->GetOnDeathDelegate().AddDynamic(this, &UDuraBeamSpell::AdditionalTargetDied);
+                CombatInterface->GetOnDeathDelegate().AddDynamic(this, &UDuraBeamSpell::AdditianalTargetDied);
             }
         }
     }

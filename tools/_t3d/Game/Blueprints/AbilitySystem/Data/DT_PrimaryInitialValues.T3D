@@ -1,0 +1,9 @@
+Begin Object Class=/Script/Engine.DataTable Name="DT_PrimaryInitialValues" ExportPath="/Script/Engine.DataTable'/Game/Blueprints/AbilitySystem/Data/DT_PrimaryInitialValues.DT_PrimaryInitialValues'"
+   Begin Object Class=/Script/Engine.AssetImportData Name="AssetImportData" ExportPath="/Script/Engine.AssetImportData'/Game/Blueprints/AbilitySystem/Data/DT_PrimaryInitialValues.DT_PrimaryInitialValues:AssetImportData'"
+   End Object
+   Begin Object Name="AssetImportData" ExportPath="/Script/Engine.AssetImportData'/Game/Blueprints/AbilitySystem/Data/DT_PrimaryInitialValues.DT_PrimaryInitialValues:AssetImportData'"
+   End Object
+   RowStruct="/Script/CoreUObject.ScriptStruct'/Script/GameplayAbilities.AttributeMetaData'"
+   AssetImportData="/Script/Engine.AssetImportData'AssetImportData'"
+   RowStructPathName="/Script/GameplayAbilities.AttributeMetaData"
+End Object

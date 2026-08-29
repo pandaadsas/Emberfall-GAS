@@ -25,13 +25,14 @@ public:
     void TraceFirstTarget(const FVector& BeamTargetLocation);
 
     UFUNCTION(BlueprintCallable)
-    void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
+    void StoreAdditionalTargets(TArray<AActor*>& OutAddditionalTargets);
 
     UFUNCTION(BlueprintImplementableEvent)
     void PrimaryTargetDied(AActor* DeadActor);
 
+    // 注意：拼写沿旧（蓝图图表以 FName 契约绑定此事件，重命名会静默断开蓝图实现，经全量蓝图编译验证确认不能改）
     UFUNCTION(BlueprintImplementableEvent)
-    void AdditionalTargetDied(AActor* DeadActor);
+    void AdditianalTargetDied(AActor* DeadActor);
 protected:
     
     UPROPERTY(BlueprintReadWrite, Category = "Beam")

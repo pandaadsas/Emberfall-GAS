@@ -1,0 +1,9 @@
+Begin Object Class=/Script/Engine.DataTable Name="DT_MessageWidgetData" ExportPath="/Script/Engine.DataTable'/Game/Blueprints/UI/Data/DT_MessageWidgetData.DT_MessageWidgetData'"
+   Begin Object Class=/Script/Engine.AssetImportData Name="AssetImportData" ExportPath="/Script/Engine.AssetImportData'/Game/Blueprints/UI/Data/DT_MessageWidgetData.DT_MessageWidgetData:AssetImportData'"
+   End Object
+   Begin Object Name="AssetImportData" ExportPath="/Script/Engine.AssetImportData'/Game/Blueprints/UI/Data/DT_MessageWidgetData.DT_MessageWidgetData:AssetImportData'"
+   End Object
+   RowStruct="/Script/CoreUObject.ScriptStruct'/Script/Dura.UIWidgetRow'"
+   AssetImportData="/Script/Engine.AssetImportData'AssetImportData'"
+   RowStructPathName="/Script/Dura.UIWidgetRow"
+End Object
