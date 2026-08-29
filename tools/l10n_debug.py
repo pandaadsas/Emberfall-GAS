@@ -1,65 +1,52 @@
 # -*- coding: utf-8 -*-
-# Phase A2：修标签 + 探查蓝图编辑 API + 全量编译诊断
-import unreal, io
+# 只读：读档/主菜单/主界面控件树名单（给用户自己汉化与找按钮用）
+import unreal, io, os
 
-OUT = io.open(__file__.replace("l10n_debug.py", "debug_out.txt"), "w", encoding="utf-8")
+OUT = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "debug_out.txt"), "w", encoding="utf-8")
 def L(s):
     OUT.write(s + "\n")
+    OUT.flush()
 
-# ---------- 1. 无效标签修复 ----------
-for path in ("/Game/Blueprints/AbilitySystem/Dura/Abilities/Lightning/GA_Electrocute",
-             "/Game/Blueprints/AbilitySystem/Dura/Abilities/Fire/FireBolt/GA_FireBolt"):
-    bp = unreal.load_asset(path)
-    gen = bp.generated_class()
-    cdo = unreal.get_default_object(gen)
-    tags = cdo.get_editor_property("activation_blocked_tags")
-    s = tags.export_text()
-    L("TAGS %s before: %s" % (path.split("/")[-1], s))
-    if "Debuff.Lightning" in s:
-        ok = tags.import_text(s.replace("Debuff.Lightning", "Debuff.Stun"))
-        cdo.set_editor_property("activation_blocked_tags", tags)
-        after = cdo.get_editor_property("activation_blocked_tags").export_text()
-        L("  import=%s after: %s" % (ok, after))
-        saved = unreal.EditorAssetLibrary.save_loaded_asset(bp, only_if_is_dirty=False)
-        L("  saved: %s" % saved)
-    else:
-        L("  no invalid tag")
+TARGETS = [
+    "/Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadScreen",
+    "/Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadScreenWidget_Base",
+    "/Game/Blueprints/UI/MainMenu/WBP_MainMenu",
+    "/Game/Blueprints/UI/Button/WBP_Button",
+    "/Game/Blueprints/UI/Overlay/WBP_Overlay",
+    "/Game/Blueprints/UI/Overlay/SubWidget/WBP_HealthManaSpells",
+]
 
-# ---------- 2. 蓝图编辑 API 探查 ----------
-if hasattr(unreal, "BlueprintEditorLibrary"):
-    fns = [n for n in dir(unreal.BlueprintEditorLibrary) if not n.startswith("_")]
-    L("BlueprintEditorLibrary: %s" % ", ".join(fns))
-else:
-    L("no BlueprintEditorLibrary")
-
-# ---------- 3. 全量编译诊断（只编译不保存） ----------
-ASSETS = unreal.EditorAssetLibrary.list_assets("/Game", recursive=True, include_folder=False)
-bp_list = []
-for p in ASSETS:
-    p = str(p)
+def txt_of(v):
     try:
-        aid = unreal.EditorAssetLibrary.find_asset_data(p)
-        cls = str(aid.asset_class_path.asset_name)
+        if type(v).__name__ == "Text":
+            return str(v)
     except Exception:
-        continue
-    if cls in ("Blueprint", "WidgetBlueprint"):
-        bp_list.append(p)
-L("blueprints to compile: %d" % len(bp_list))
+        pass
+    return None
 
-ok_count = 0
-fail = []
-for p in bp_list:
+for t in TARGETS:
     try:
-        bp = unreal.load_asset(p)
-        r = unreal.BlueprintEditorLibrary.compile_blueprint(bp)
-        if r:
-            ok_count += 1
-        else:
-            fail.append(p)
-    except Exception as e:
-        fail.append(p + " EXC:" + repr(e)[:80])
-L("compile ok=%d fail=%d" % (ok_count, len(fail)))
-for f in fail:
-    L("COMPILE-FAIL %s" % f)
-L("[DBG-DONE]")
+        unreal.EditorAssetLibrary.load_asset(t)
+    except Exception:
+        pass
+    pkg = t
+    L("==== %s" % t)
+    for obj in unreal.ObjectIterator():
+        try:
+            if obj.get_package().get_name() != pkg:
+                continue
+            cls = obj.get_class().get_name()
+            interesting = (cls in ("TextBlock", "Button", "EditableTextBox", "RichTextBlock", "CheckBox")
+                           or cls.startswith("WBP_"))
+            if not interesting:
+                continue
+            txt = ""
+            try:
+                txt = txt_of(obj.get_editor_property("text")) or ""
+            except Exception:
+                pass
+            L("  %s | %s | [%s]" % (cls, obj.get_name(), txt))
+        except Exception:
+            continue
+L("[DUMP-DONE]")
 OUT.close()
