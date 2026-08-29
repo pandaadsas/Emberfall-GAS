@@ -1,0 +1,18 @@
+csv to fill:
+---,MessageTag,Message,MessageWidget,Image
+Message.HealthPotion,"(TagName=""Message.HealthPotion"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""D8AFDC1D4EAC4E02576C4DA7FA63E362"", ""拾取了生命药剂"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_Potion_Red.T_Potion_Red'"
+Message.ManaPotion,"(TagName=""Message.ManaPotion"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""2DA102184E297BBE2D01C6ACD50C342B"", ""拾取了法力药剂"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_Potion_Blue.T_Potion_Blue'"
+Message.HealthCrystal,"(TagName=""Message.HealthCrystal"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""AA9CB0C14AB14FBAFCDEA19A9E36F183"", ""拾取了生命水晶"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_HealthCrystal.T_HealthCrystal'"
+Message.ManaCrystal,"(TagName=""Message.ManaCrystal"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""038ACB4945B4964834F52D9B70B29226"", ""拾取了法力水晶"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_ManaCrystal.T_ManaCrystal'"
+
+fill result: True
+saved: True
+CSV AFTER:
+---,MessageTag,Message,MessageWidget,Image
+Message.HealthPotion,"(TagName=""Message.HealthPotion"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""D8AFDC1D4EAC4E02576C4DA7FA63E362"", ""拾取了生命药剂"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_Potion_Red.T_Potion_Red'"
+Message.ManaPotion,"(TagName=""Message.ManaPotion"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""2DA102184E297BBE2D01C6ACD50C342B"", ""拾取了法力药剂"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_Potion_Blue.T_Potion_Blue'"
+Message.HealthCrystal,"(TagName=""Message.HealthCrystal"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""AA9CB0C14AB14FBAFCDEA19A9E36F183"", ""拾取了生命水晶"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_HealthCrystal.T_HealthCrystal'"
+Message.ManaCrystal,"(TagName=""Message.ManaCrystal"")","NSLOCTEXT(""[8DA41B181D8CE8CAEBD4166A7F6FBCC1]"", ""038ACB4945B4964834F52D9B70B29226"", ""拾取了法力水晶"")","/Script/UMG.WidgetBlueprintGeneratedClass'/Game/Blueprints/UI/Overlay/SubWidget/WBP_EffectMessage.WBP_EffectMessage_C'","/Script/Engine.Texture2D'/Game/Assets/UI/Pickups/T_ManaCrystal.T_ManaCrystal'"
+
+HAS_CHINESE: True
+[FOLLOWUP-DONE]

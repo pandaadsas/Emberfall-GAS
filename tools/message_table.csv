@@ -1,0 +1,5 @@
+﻿Name,MessageTag,Message
+Message.HealthPotion,Message.HealthPotion,"拾取了生命药剂"
+Message.ManaPotion,Message.ManaPotion,"拾取了法力药剂"
+Message.HealthCrystal,Message.HealthCrystal,"拾取了生命水晶"
+Message.ManaCrystal,Message.ManaCrystal,"拾取了法力水晶"
