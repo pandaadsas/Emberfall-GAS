@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# 只读：转储 DA_AttributeInfo 全部字段内容
+# 只读：转储读档槽位三个控件的全部子对象（找 SELECT SLOT / Enter Name 的文本控件）
 import unreal, io, os
 
 OUT = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "debug_out.txt"), "w", encoding="utf-8")
@@ -7,10 +7,11 @@ def L(s):
     OUT.write(s + "\n")
     OUT.flush()
 
-ASSET = "/Game/Blueprints/AbilitySystem/Data/DA_AttributeInfo"
-unreal.EditorAssetLibrary.load_asset(ASSET)
-asset = unreal.load_asset(ASSET)
-L("class: %s" % asset.get_class().get_name())
+TARGETS = [
+    "/Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadSlot_Taken",
+    "/Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadSlot_Vacant",
+    "/Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadSlot_EnterName",
+]
 
 def txt_of(v):
     try:
@@ -20,34 +21,43 @@ def txt_of(v):
         pass
     return None
 
-for n in dir(asset):
-    if n.startswith("_"):
-        continue
-    try:
-        v = asset.get_editor_property(n)
-    except Exception:
-        continue
-    L("prop %s : %s" % (n, type(v).__name__))
-    if isinstance(v, list) or type(v).__name__ == "Array":
-        L("  array len=%d" % len(v))
-        for i, el in enumerate(v):
-            fields = [f for f in dir(el) if not f.startswith("_")]
-            parts = []
-            for f in fields:
-                try:
-                    fv = getattr(el, f)
-                except Exception:
-                    continue
-                t = txt_of(fv)
-                if t is not None:
-                    parts.append("%s=[%s]" % (f, t))
-                else:
-                    tn = type(fv).__name__
-                    if tn in ("Name",):
-                        parts.append("%s=%s" % (f, str(fv)))
-                    elif tn in ("int", "float", "bool"):
-                        parts.append("%s=%s" % (f, fv))
-            L("  [%d] %s" % (i, " | ".join(parts)))
-
+for t in TARGETS:
+    unreal.EditorAssetLibrary.load_asset(t)
+    L("==== %s" % t)
+    for obj in unreal.ObjectIterator():
+        try:
+            if obj.get_package().get_name() != t:
+                continue
+            cls = obj.get_class().get_name()
+        except Exception:
+            continue
+        # 只关心可视控件类
+        if not (cls.endswith("_C") or cls in ("TextBlock", "Button", "EditableTextBox",
+                                              "EditableText", "RichTextBlock", "Image",
+                                              "Border", "Overlay", "VerticalBox", "HorizontalBox",
+                                              "SizeBox", "CanvasPanel", "NamedSlot", "WidgetSwitcher")):
+            continue
+        name = "?"
+        try:
+            name = obj.get_name()
+        except Exception:
+            pass
+        # 跳过 CDO
+        if name.startswith("Default__"):
+            continue
+        txt = ""
+        try:
+            txt = txt_of(obj.get_editor_property("text")) or ""
+        except Exception:
+            pass
+        bind = ""
+        for bn in ("text_delegate",):
+            try:
+                b = obj.get_editor_property(bn)
+                if b is not None:
+                    bind = " [BIND:%s]" % type(b).__name__
+            except Exception:
+                pass
+        L("  %-28s | %-28s | [%s]%s" % (cls, name, txt, bind))
 L("[DUMP-DONE]")
 OUT.close()

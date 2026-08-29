@@ -1,22 +1,58 @@
-class: AttributeInfo
-prop attribute_information : Array
-  array len=18
-  [0] attribute_description=[Increases physical damage] | attribute_name=[Strength] | attribute_value=0.0
-  [1] attribute_description=[Increases magical damage] | attribute_name=[Intelligence] | attribute_value=0.0
-  [2] attribute_description=[Increases Armor and Armor Penetration] | attribute_name=[Resilience] | attribute_value=0.0
-  [3] attribute_description=[Increases Health] | attribute_name=[Vigor] | attribute_value=0.0
-  [4] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[Armor] | attribute_value=0.0
-  [5] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[Armor_Penetration] | attribute_value=0.0
-  [6] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[Block_Chance] | attribute_value=0.0
-  [7] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[CriticalHitChance] | attribute_value=0.0
-  [8] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[CriticalHitDamage] | attribute_value=0.0
-  [9] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[CriticalHitResistance] | attribute_value=0.0
-  [10] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[HealthRegeneration] | attribute_value=0.0
-  [11] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[ManaRegeneration] | attribute_value=0.0
-  [12] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[MaxHealth] | attribute_value=0.0
-  [13] attribute_description=[Reduces damage taken, improves Block Chance] | attribute_name=[MaxMana] | attribute_value=0.0
-  [14] attribute_description=[Resistance to Fire Damage] | attribute_name=[Fire Resistance] | attribute_value=0.0
-  [15] attribute_description=[Resistance to Lightning Damage] | attribute_name=[Lightning Resistance] | attribute_value=0.0
-  [16] attribute_description=[Resistance to Arcane Damage] | attribute_name=[Arcane Resistance] | attribute_value=0.0
-  [17] attribute_description=[Resistance to Physical Damage] | attribute_name=[Physical Resistance] | attribute_value=0.0
+==== /Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadSlot_Taken
+  HorizontalBox                | HorizontalBox_0              | []
+  VerticalBox                  | VerticalBox_Root             | []
+  HorizontalBox                | HorizontalBox_1              | []
+  TextBlock                    | Text_Map                     | [地图：]
+  TextBlock                    | Text_MapValue                | [1]
+  TextBlock                    | Text_LevelValue              | [1]
+  TextBlock                    | Text_Level                   | [等级：]
+  Image                        | Image_Background             | []
+  Overlay                      | Overlay_Root                 | []
+  Image                        | Image_Border                 | []
+  SizeBox                      | SizeBox_Root                 | []
+  TextBlock                    | Text_PlayerName              | [玩家名称]
+  WBP_WideButton_C             | Button_SelectSlot            | [SELECT SLOT]
+  SizeBox                      | SizeBox_Root                 | []
+  Overlay                      | Overlay_Root                 | []
+  Image                        | Image_Background             | []
+  Image                        | Image_Border                 | []
+  VerticalBox                  | VerticalBox_Root             | []
+  TextBlock                    | Text_PlayerName              | [玩家名称]
+  HorizontalBox                | HorizontalBox_1              | []
+  TextBlock                    | Text_Level                   | [等级：]
+  TextBlock                    | Text_LevelValue              | [1]
+  HorizontalBox                | HorizontalBox_0              | []
+  TextBlock                    | Text_Map                     | [地图：]
+  TextBlock                    | Text_MapValue                | [1]
+  WBP_WideButton_C             | Button_SelectSlot            | [SELECT SLOT]
+==== /Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadSlot_Vacant
+  Button                       | Button_NewGame               | []
+  VerticalBox                  | VerticalBox_54               | []
+  Image                        | Image_Background             | []
+  Overlay                      | Overlay_Root                 | []
+  Image                        | Image_Border                 | []
+  SizeBox                      | SizeBox_Root                 | []
+  TextBlock                    | TextBlock_42                 | [新游戏]
+  SizeBox                      | SizeBox_Root                 | []
+  Overlay                      | Overlay_Root                 | []
+  Image                        | Image_Background             | []
+  Image                        | Image_Border                 | []
+  VerticalBox                  | VerticalBox_54               | []
+  TextBlock                    | TextBlock_42                 | [新游戏]
+  Button                       | Button_NewGame               | []
+==== /Game/Blueprints/UI/MainMenu/LoadMenu/WBP_LoadSlot_EnterName
+  EditableText                 | EditableText_EnterName       | []
+  VerticalBox                  | VerticalBox_84               | []
+  Image                        | Image_Background             | []
+  Overlay                      | Overlay_Root                 | []
+  Image                        | Image_Border                 | []
+  SizeBox                      | SizeBox_Root                 | []
+  WBP_WideButton_C             | Button_NewSlot               | [NEW SLOT]
+  SizeBox                      | SizeBox_Root                 | []
+  Overlay                      | Overlay_Root                 | []
+  Image                        | Image_Background             | []
+  Image                        | Image_Border                 | []
+  VerticalBox                  | VerticalBox_84               | []
+  EditableText                 | EditableText_EnterName       | []
+  WBP_WideButton_C             | Button_NewSlot               | [NEW SLOT]
 [DUMP-DONE]
