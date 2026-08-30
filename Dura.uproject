@@ -18,6 +18,11 @@
 				"Niagara",
 				"ModelViewViewModel"
 			]
+		},
+		{
+			"Name": "DuraEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
