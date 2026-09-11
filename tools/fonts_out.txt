@@ -1,7 +1,0 @@
-exists before: False
-imported: True
-fontface class: FontFace
-loading_policy INLINE + saved
-export_text:
-(DefaultTypeface=(Fonts=((Name="Default",Font=(FontFaceAsset="/Script/Engine.FontFace'/Game/Assets/Fonts/Amarante/Amarante-Regular.Amarante-Regular'")))),FallbackTypeface=(Typeface=(Fonts=),ScalingFactor=1.000000),SubTypefaces=,bEnableAscentDescentOverride=True)
-[FONTS-DONE]

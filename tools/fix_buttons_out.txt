@@ -1,7 +1,0 @@
-OK WBP_LoadSlot_Taken | Button_SelectSlot | [SELECT SLOT] -> [选择槽位] readback=[选择槽位]
-OK WBP_LoadSlot_Taken | Button_SelectSlot | [SELECT SLOT] -> [选择槽位] readback=[选择槽位]
-SAVE WBP_LoadSlot_Taken -> True
-OK WBP_LoadSlot_EnterName | Button_NewSlot | [NEW SLOT] -> [新建槽位] readback=[新建槽位]
-OK WBP_LoadSlot_EnterName | Button_NewSlot | [NEW SLOT] -> [新建槽位] readback=[新建槽位]
-SAVE WBP_LoadSlot_EnterName -> True
-[FIX-DONE]
