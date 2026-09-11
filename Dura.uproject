@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"EngineAssociation": "5.8",
 	"Category": "",
-	"Description": "",
+	"Description": "Emberfall 余烬陨落——基于 Unreal Engine 5.8 Gameplay Ability System 的暗黑奇幻第三人称 ARPG，全中文注释作品集项目。",
 	"Modules": [
 		{
 			"Name": "Dura",

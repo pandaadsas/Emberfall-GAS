@@ -1,4 +1,4 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 using UnrealBuildTool;
 using System.Collections.Generic;

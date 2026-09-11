@@ -1,4 +1,4 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 #pragma once
 
@@ -57,7 +57,7 @@ struct FSaveActor
     UPROPERTY()
     FTransform Transform = FTransform();
 
-    // Serialized variables from the Actor - only those marked with SaveGame specifier
+    // 从 Actor 序列化的变量——仅限标记了 SaveGame 说明符的属性
     UPROPERTY()
     TArray<uint8> Bytes;
 };

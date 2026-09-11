@@ -1,4 +1,4 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 
 #include "AbilitySystem/Abilities/Electrocute.h"
@@ -93,7 +93,7 @@ FString UElectrocute::GetNextLevelDescription(int32 Level)
         "<Damage>%d</>"
         "<Default> 点闪电伤害，并有概率眩晕</>"),
 
-        //Values
+        // 数值
         Level, 
         ManaCost, 
         Cooldown,

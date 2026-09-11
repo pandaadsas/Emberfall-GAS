@@ -1,4 +1,4 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 #pragma once
 
@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "HighlightInterface.generated.h"
 
-// This class does not need to be modified.
+// 无需修改此类。
 UINTERFACE(MinimalAPI, BlueprintType)
 class UHighlightInterface : public UInterface
 {
@@ -20,7 +20,7 @@ class DURA_API IHighlightInterface
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+	// 在此类中添加接口函数；实现该接口的类将继承此类。
 public:
     
     UFUNCTION(BlueprintNativeEvent)

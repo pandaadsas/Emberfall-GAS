@@ -1,4 +1,4 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 
 #include "AbilitySystem/AsyncTasks/WaitCooldownChange.h"
@@ -16,11 +16,11 @@ UWaitCooldownChange* UWaitCooldownChange::WaitForCooldownChange(UAbilitySystemCo
         return nullptr;
     }
 
-    // To know when a cooldown effect has ended
+    // 监听冷却效果结束的时机
     AbilitySystemComponent->RegisterGameplayTagEvent(InCooldownTag, EGameplayTagEventType::NewOrRemoved)
     .AddUObject(WaitCooldownChange, &UWaitCooldownChange::CooldownTagChanged);
 
-    // To know when a cooldown effect has been applied
+    // 监听冷却效果被应用的时机
     AbilitySystemComponent->OnActiveGameplayEffectAddedDelegateToSelf
     .AddUObject(WaitCooldownChange, &UWaitCooldownChange::OnActiveEffectAdded);
 

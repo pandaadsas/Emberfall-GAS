@@ -1,4 +1,4 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 #pragma once
 
@@ -36,7 +36,7 @@ public:
     void LoadSavedSlotDatas();
 
 
-    // Setter and Getter
+    // Setter 与 Getter
     void SetPlayButtonName(FString InPlayButtonName);
     FString GetPlayButtonName() const { return PlayButtonName; }
 
@@ -54,7 +54,7 @@ public:
 
     void SetQuitButtonEnable(bool InQuitButtonEnable);
     bool GetQuitButtonEnable() const { return QuitButtonEnable; }
-    // End Setter and Getter
+    // Setter 与 Getter 结束
 
 protected:
     void SelectSlotButtonPressed(UMVVM_LoadSlot* LoadSlot);

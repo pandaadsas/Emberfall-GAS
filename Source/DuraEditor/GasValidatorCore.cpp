@@ -1,4 +1,4 @@
-// Copyright by person HDD
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 #include "GasValidatorCore.h"
 
@@ -315,7 +315,7 @@ FGasValidationResult FGasValidatorCore::RunValidation()
 
 			RegisteredAbilityPaths.Add(Entry.Ability->GetPathName());
 
-			// AbilityTag
+			// AbilityTag 校验
 			if (!Entry.AbilityTag.IsValid())
 			{
 				AddIssue(EGasValidationSeverity::Error, TEXT("DA.AbilityTagInvalid"), TEXT("标签一致性"),

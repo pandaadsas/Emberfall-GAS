@@ -1,6 +1,6 @@
-// Copyright by person HDD  
+// Copyright (c) 2026 panda | Emberfall 余烬陨落 | MIT License
 
 
 #include "Interaction/PlayerInterface.h"
 
-// Add default functionality here for any IPlayerInterface functions that are not pure virtual.
+// 在此为 IPlayerInterface 的非纯虚接口函数添加默认实现。
