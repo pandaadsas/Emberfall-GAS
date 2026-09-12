@@ -65,25 +65,6 @@ GAS 配置校验器/        DuraEditor 工具的需求设计与使用说明
 tools/                蓝图汉化与批量调试脚本
 ```
 
-## 学习文档导航
-
-| 文档 | 内容 |
-| --- | --- |
-| [01 全局框架启动链路](docs/01-全局框架启动链路-从模块加载到GameplayTag注册.md) | 从模块加载到 GameplayTag 注册 |
-| [02 游戏模式与角色诞生链路](docs/02-游戏模式与角色诞生链路-ASC安装与玩家敌人双轨初始化.md) | ASC 安装与玩家敌人双轨初始化 |
-| [03 输入分发链路](docs/03-输入分发链路-从鼠标按键到ASC技能触发.md) | 从鼠标按键到 ASC 技能触发 |
-| [04 属性系统全链路](docs/04-属性系统全链路-AttributeSet属性流水线与派生计算.md) | AttributeSet 属性流水线与派生计算 |
-| [05 伤害计算与 GE 流水线](docs/05-伤害计算与GE流水线-ExecCalc公式与Library工具箱.md) | ExecCalc 公式与 Library 工具箱 |
-| [06 技能释放全链路](docs/06-技能释放全链路-从输入Tag到技能激活与异步任务.md) | 从输入 Tag 到技能激活与异步任务 |
-| [07 数据驱动配置链路](docs/07-数据驱动配置链路-五大DataAsset与查表体系.md) | 五大 DataAsset 与查表体系 |
-| [08 UI 与 WidgetController 链路](docs/08-UI与WidgetController链路-MVC模式下的数据流.md) | MVC 模式下的数据流 |
-| [09 存档与加载屏 MVVM 链路](docs/09-存档与加载屏MVVM链路-SaveGame与FieldNotify数据绑定.md) | SaveGame 与 FieldNotify 数据绑定 |
-| [10 敌人 AI 与战斗链路](docs/10-敌人AI与战斗链路-行为树驱动与索敌服务.md) | 行为树驱动与索敌服务 |
-| [11 世界交互链路](docs/11-世界交互链路-效果Actor检查点与接口体系.md) | 效果 Actor、检查点与接口体系 |
-| [12 投射物与法术 Actor 链路](docs/12-投射物与法术Actor链路-碰撞命中与网络销毁表现.md) | 碰撞命中与网络销毁表现 |
-| [13 面试考点速查手册](docs/13-面试考点速查手册.md) | GAS 高频面试考点速查 |
-| [00 学习路线总览](docs/00-学习路线总览.md) | 全部文档的阅读路线图 |
-
 ## 致谢
 
 - 本项目基于 [GAS_Dura](https://github.com/hangge1/GAS_Dura)（MIT License，Copyright © 2024-2026 Zhihang Zhang）修改而来，在其基础上完成了 **UE 5.8 适配、稳定性修复、全量中文化、编辑器工具（GAS 配置校验器）与配套文档建设**。
