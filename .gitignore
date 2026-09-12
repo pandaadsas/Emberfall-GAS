@@ -69,3 +69,4 @@ PipInstall/
 *_out.txt
 tools/_dbg.bat
 tools/_tmp_dump.py
+docs/
